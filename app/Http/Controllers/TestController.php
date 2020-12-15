@@ -5,18 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
+use App\Test;
 
 class TestController extends Controller
 {
     public function test(Request $request)
     {
         $nonce = time();
-        $access_key = "d671bbb1c3b41eec";
-        $secret_key = "bb32e10326e8d5a345b5b59b6aeabe37";
+        $access_key = env("BIZZCOIN_KEY");
+        $secret_key =  env("BIZZCOIN_SECRET");
         $sig = hash_hmac('SHA256', $nonce . $access_key, $secret_key);
         dd($nonce,$access_key,$sig);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://bizz.exchange/api/v2/peatio/account/latest/deposit_address");
+        curl_setopt($ch, CURLOPT_URL, env("BIZZCOIN_LINK"));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
@@ -51,7 +52,11 @@ class TestController extends Controller
     }
     public function web_hook(Request $request)
     {
-        Storage::put('file.txt', $request->input());
-        return 1;
+        // dd($request->input());
+        $test = new Test;
+        $test->data =  json_encode($request->input());
+        $test->save();
+        return response()->json('OKEY', 200);
+
     }
 }
