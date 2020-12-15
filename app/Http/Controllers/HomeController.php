@@ -472,11 +472,11 @@ class HomeController extends Controller
         $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
 
         $nonce = time();
-        $access_key = "560e19cf972c8d6e";
-        $secret_key = "965039792952d7a310234e1de59aad26";
+        $access_key = env("BIZZCOIN_KEY");
+        $secret_key =  env("BIZZCOIN_SECRET");
         $sig = hash_hmac('SHA256', $nonce . $access_key, $secret_key);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://stage.stagebcoin.com/api/v2/peatio/account/latest/deposit_address");
+        curl_setopt($ch, CURLOPT_URL, env("BIZZCOIN_LINK"));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
