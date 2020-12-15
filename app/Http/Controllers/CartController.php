@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
+use App\Logger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -14,8 +16,78 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $cart = Cart::with(['user'])->select(DB::raw('sum(c_price_all) as c_price_all,c_doc_id,sum(c_amount) as c_amount,MAX(created_at) as created_at,MAX(updated_at) as updated_at,MAX(c_state) as c_state,MAX(c_user) as c_user'))
+            ->where('c_state', 2)
+            ->where('c_type', 0)
+
+            ->groupBy('c_doc_id')
+            ->get();
+        return view('pages.order.pending', [
+            'data' => $cart
+        ]);
     }
+    public function finished()
+    {
+        $cart = Cart::with(['user'])->select(DB::raw('sum(c_price_all) as c_price_all,c_doc_id,sum(c_amount) as c_amount,MAX(created_at) as created_at,MAX(updated_at) as updated_at,MAX(c_state) as c_state,MAX(c_user) as c_user'))
+            ->where('c_state', 1)
+            ->where('c_type', 0)
+
+            ->groupBy('c_doc_id')
+            ->get();
+
+        return view('pages.order.finished', ['data' => $cart]);
+    }
+    public function rejected()
+    {
+        $cart = Cart::with(['user'])->select(DB::raw('sum(c_price_all) as c_price_all,c_doc_id,sum(c_amount) as c_amount,MAX(created_at) as created_at,MAX(updated_at) as updated_at,MAX(c_state) as c_state,MAX(c_user) as c_user'))
+            ->where('c_state', 3)
+            ->where('c_type', 0)
+            ->groupBy('c_doc_id')
+            ->get();
+        return view('pages.order.rejected', ['data' => $cart]);
+    }
+    public function cart_delete(Request $request, $id)
+    {
+        $cart = Cart::where('c_doc_id', $id);
+        Logger::create([
+            'log_name' => 'Order',
+            'log_action' => 'Delete',
+            'log_admin' => session('dashboard'),
+            'log_info' => json_encode($cart->get()->toArray())
+        ]);
+        $cart->delete();
+        return redirect()->back()->withSuccess('Deleted Order in Cart Successfully !');
+    }
+    public function change_state($id, $type)
+    {
+        $cart = Cart::where('c_doc_id', $id)->where('c_type', 0);
+        switch ($type) {
+            case 'finish':
+                $cart->update(['c_state' => 1]);
+                break;
+            case 'reject':
+                $cart->update(['c_state' => 3]);
+                break;
+            default:
+                $cart->update(['c_state' => 2]);
+                break;
+        }
+        Logger::create([
+            'log_name' => 'Cart',
+            'log_action' => 'Update',
+            'log_admin' => session('dashboard'),
+            'log_info' => json_encode($cart->get()->toArray())
+        ]);
+        return redirect()->back()->withSuccess('Updated Order in Cart Successfully !');
+    }
+    // public function card()
+    // {
+    //     $cart = Cart::with(['user'])->select(DB::raw('sum(c_price_all) as c_price_all,c_doc_id,sum(c_amount) as c_amount,MAX(created_at) as created_at,MAX(updated_at) as updated_at,MAX(c_state) as c_state,MAX(c_user) as c_user'))
+    //     ->where('c_state',2)
+    //     ->groupBy('c_doc_id')
+    //     ->get();
+    //     return view('pages.order.card', []);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -44,9 +116,12 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(Cart $cart)
+    public function show( $id)
     {
-        //
+        $cart = Cart::with(['user','product'])->where('c_doc_id', $id)->get();
+        return view('pages.order.show', ['data' => $cart]);
+
+
     }
 
     /**
@@ -83,10 +158,10 @@ class CartController extends Controller
         $cart->delete();
         Logger::create([
             'log_name' => 'Cart',
-            'log_action' =>'Delete',
+            'log_action' => 'Delete',
             'log_admin' => session('dashboard'),
-            'log_info'=> json_encode($cart->toArray())]);
+            'log_info' => json_encode($cart->toArray())
+        ]);
         return redirect()->back()->withSuccess('Deleted Product in Cart Successfully !');
-
     }
 }

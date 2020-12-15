@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data =  User::where('u_role', 'USER')->get();
+        $data =  User::where('u_role', 'USER')->orderBy('u_state')->get();
         return view('pages.user.index', ['data' => $data]);
     }
 

@@ -99,8 +99,8 @@
                 </li>
                 
                 <li>
-                    <a href="calendar.html"
-                        class="waves-effect {{getCurrentRoute(Route::currentRouteName() )== 'index' ? '' : ''}}"><i
+                    <a href="{{route('dashboard.order.index')}}"
+                        class="waves-effect {{getCurrentRoute(Route::currentRouteName() )== 'order' ? 'active' : ''}}"><i
                             data-feather="shopping-bag"></i><span>
                             Orders</span></a>
                 </li>

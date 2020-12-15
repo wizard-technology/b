@@ -38,4 +38,8 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'p_admin');
     }
+    public function extra()
+    {
+        return $this->hasMany(Imageproduct::class, 'i_product');
+    }
 }

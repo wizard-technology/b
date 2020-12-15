@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Company;
-use App\Imageproduct;
 use App\Imageproductcompany;
 use App\Productcompany;
 use App\User;

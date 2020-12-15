@@ -11,21 +11,22 @@ class TestController extends Controller
     public function test(Request $request)
     {
         $nonce = time();
-        $access_key = "560e19cf972c8d6e";
-        $secret_key = "965039792952d7a310234e1de59aad26";
+        $access_key = "d671bbb1c3b41eec";
+        $secret_key = "bb32e10326e8d5a345b5b59b6aeabe37";
         $sig = hash_hmac('SHA256', $nonce . $access_key, $secret_key);
+        dd($nonce,$access_key,$sig);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://stage.stagebcoin.com/api/v2/peatio/account/latest/deposit_address");
+        curl_setopt($ch, CURLOPT_URL, "https://bizz.exchange/api/v2/peatio/account/latest/deposit_address");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
             [
                 "currency" => "bizz",
-                "amount" =>0.0001,
+                "amount" =>0.01,
                 "callback_url" => "callback_url",
                 "web_hook_url" => route('web_hook'),
-                "remarks" => 'placed_order_id',
-                "user_id" => 'user_id'
+                "remarks" => '2112',
+                "user_id" => '12123'
             ]
         ));
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -39,6 +40,7 @@ class TestController extends Controller
         $result = curl_exec($ch);
 
         curl_close($ch);
+        return $result;
         dd($result);
         $data = "BIZZ:".json_decode($result)->address."?amount=0.0001";
         $qrCode = new \Endroid\QrCode\QrCode($data);

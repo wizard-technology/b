@@ -139,6 +139,7 @@ class AuthController extends Controller
             'u_second_name',
             'u_phone',
             'u_email',
+            'u_state',
             'u_role',
         ]));
     }

@@ -1,6 +1,4 @@
 <!-- jQuery  -->
-<script src="{{asset('assets/plugins/dropzone/dist/dropzone.js')}}"></script>
-<script src="{{asset('assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('assets/js/popper.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('assets/js/modernizr.min.js')}}"></script>
@@ -37,9 +35,12 @@
 
 <script src="{{asset('assets/pages/form-advanced.js')}}"></script>
 
-
 <!-- Datatable init js -->
 <script src="{{asset('assets/pages/datatables.init.js')}}"></script>
+
+{{-- <script src="{{asset('assets/plugins/chart.js/chart.min.js')}}"></script> --}}
+{{-- <script src="{{asset('assets/pages/chartjs.init.js')}}"></script>  --}}
+
 <script src="{{asset('assets/js/app.js')}}"></script>
 
 <script>

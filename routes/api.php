@@ -22,7 +22,7 @@ Route::group([
     Route::post('forgetpassword', 'AuthController@forgetpassword');
     Route::post('verify_reset_password', 'AuthController@verify_reset_password');
     Route::post('change_password', 'AuthController@change_password');
-    Route::get('home', 'HomeController@home');
+    Route::get('home', 'HomeController@home');  
     Route::get('types', 'HomeController@types');
     Route::get('company', 'HomeController@company');
     Route::get('product/{id}', 'HomeController@product');
@@ -67,6 +67,8 @@ Route::group([
                 Route::post('cart/amount', 'HomeController@amountChange');
                 Route::post('checkout', 'HomeController@checkOut');
                 Route::post('payment', 'HomeController@payment');
+                Route::post('payment/redeem', 'HomeController@payment_redeem');
+                Route::get('mainscreen', 'HomeController@isNotificationAndCheckout');
             });
         });
         

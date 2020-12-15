@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Cart;
 use App\Grouped;
+use App\Imageproduct;
 use App\Logger;
 use App\Product;
 use App\Producttag;
@@ -62,7 +64,6 @@ class ProductController extends Controller
                 'types' => $type,
                 'tags' => $tag,
                 'subcategories' => $subcategory,
-
             ]
         ], 200);
     }
@@ -141,18 +142,13 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        $product = $product->with('tags')->first();
-        if (is_null($product)) return response()->json([
-            'message' => 'Product not found',
-            'errors' => [
-                'product' => 'Wrong id'
-            ]
-        ], 404);
-        return response()->json([
-            'product' => $product
-        ], 200);
+        $product = Product::with('extra')->findOrFail($id);
+        return view('pages.product.show', [
+           'data'=>$product
+        ]);
+       
     }
 
     /**
@@ -163,8 +159,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $isState = $product->p_state;
         $product->p_state = !$product->p_state;
         $product->save();
+        $cart = Cart::with('product')->where('c_product', $product->id)->where('c_state', 0)->delete();
         Logger::create([
             'log_name' => 'Product',
             'log_action' => 'Update',
@@ -222,12 +220,26 @@ class ProductController extends Controller
         $product->p_type = $request->category;
         $product->p_subcategory = $request->subcategory;
         $product->p_grouped = $request->grouped;
+        $isState = $product->p_state;
+        $isCard = $product->p_has_info;
         $product->p_state =  $request->state == 'on' ? 1 : 0;
         $product->p_has_info =  $request->hasinfo == 'on' ? 1 : 0;
         $product->p_order_by = $request->priority;
         $path = $request->imgs == null ? null :  $product->p_image;
-        $product->p_image = isset($request->imgs)  ? $request->imgs->store('uploads', 'public')     : $product->p_image;
+        $product->p_image = isset($request->imgs)  ? $request->imgs->store('uploads', 'public') : $product->p_image;
         $product->save();
+        $cart = Cart::with('product')->where('c_product', $product->id)->where('c_state', 0)->get();
+        foreach ($cart as $key => $value) {
+            // dd($isCard != $value->product->p_has_info);
+            if (($isCard != $value->product->p_has_info) || ($isState != $value->product->p_state)) {
+                $value->delete();
+            } else {
+                $value->c_price = $product->p_price;
+                $value->c_price_all = $product->p_price * $value->c_amount;
+                $value->save();
+            }
+        }
+        // dd($cart);
         if (isset($path)) {
             Storage::delete('public/' . $path);
         }
@@ -274,5 +286,36 @@ class ProductController extends Controller
             }
         }
         return redirect()->back()->withErrors('You can not delete this product !');
+    }
+    public function extra_image(Request $request,$id)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
+        ]);
+        $extra = new Imageproduct;
+        $extra->i_link = $request->file->store('uploads', 'public');
+        $extra->i_product = $id;
+        $extra->i_admin = session('dashboard');
+        $extra->save();
+        Logger::create([
+            'log_name' => 'Product',
+            'log_action' => 'Added Extra Image',
+            'log_admin' => session('dashboard'),
+            'log_info' => json_encode($extra->toArray())
+        ]);
+    }
+    public function extra_delete(Request $request,$id)
+    {
+        $image = Imageproduct::findOrFail($id);
+        Storage::delete('public/' . $image->i_link);
+        $image->delete();
+        Logger::create([
+            'log_name' => 'Product',
+            'log_action' => 'Deleted Extra Image',
+            'log_admin' => session('dashboard'),
+            'log_info' => json_encode($image->toArray())
+        ]);
+        return redirect()->back()->withSuccess('Deleted Extra Image Successfully !');
+
     }
 }

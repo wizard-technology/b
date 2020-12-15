@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
+    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <link href="{{asset('assets/plugins/dropzone/dist/dropzone.css')}}" rel="stylesheet" type="text/css">  
 
     <link rel="stylesheet" href="{{asset('assets/plugins/metro/MetroJs.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/morris/morris.css')}}">

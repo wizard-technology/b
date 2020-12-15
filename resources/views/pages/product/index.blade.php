@@ -119,6 +119,8 @@
                                                             <div class="dropdown-menu">
                                                                 <a class="dropdown-item"
                                                                     href="{{route('dashboard.product.edit',$value->id)}}">{{ $value->p_state == 1 ? 'Inactive' :'Active'}}</a>
+                                                                <a class="dropdown-item"
+                                                                    href="{{route('dashboard.product.show',$value->id)}}">Show</a>
                                                                 <button class="dropdown-item" data-toggle="modal"
                                                                     data-target=".bd-example-modal-form-{{$value->id}}">Edit</button>
                                                                 <div class="dropdown-divider"></div>
@@ -203,7 +205,7 @@
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <input class="form-control" type="number"
+                                                                            <input class="form-control" 
                                                                                 required="" name="price"
                                                                                 placeholder="Price"
                                                                                 value="{{$value->p_price}}">
@@ -422,7 +424,7 @@
                             <div class="form-group row">
                                 <div class="col-12">
                                     <input class="form-control {{ $errors->has('price')? 'is-invalid' : '' }}"
-                                        type="number" required="" name="price" placeholder="Price"
+                                         required="" name="price" placeholder="Price"
                                         value="{{old('price')}}">
                                     @if($errors->has('price'))
                                     <div class="invalid-feedback">

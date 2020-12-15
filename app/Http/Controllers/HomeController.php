@@ -31,7 +31,7 @@ class HomeController extends Controller
 {
     public function home(Request $request)
     {
-        $product = Product::where('p_state', 1)->orderBy('p_order_by')->paginate(10);
+        $product = Product::with('extra')->where('p_state', 1)->orderBy('p_order_by')->paginate(10);
         $type = Type::where('t_state', 1)->orderBy('id', 'DESC')->get();
         return response()->json([
             'product' => $product,
@@ -39,22 +39,22 @@ class HomeController extends Controller
         ], 200);
     }
     public function getSubcategory($id)
-    { 
+    {
         $subcategory = Subcategory::where('st_state', 1)->where('st_type', $id)->orderBy('id', 'DESC')->get();
         return response()->json([
             'subcategory' => $subcategory
         ], 200);
     }
     public function getGrouped($id)
-    { 
+    {
         $grouped = Grouped::where('gr_state', 1)->where('gr_subcategory', $id)->orderBy('id', 'DESC')->get();
         return response()->json([
             'grouped' => $grouped
         ], 200);
     }
     public function getProduct($id)
-    { 
-        $product = Product::where('p_state', 1)->where('p_grouped',$id)->orderBy('p_order_by')->paginate(10);
+    {
+        $product = Product::with('extra')->where('p_state', 1)->where('p_grouped', $id)->orderBy('p_order_by')->paginate(10);
         return response()->json([
             'product' => $product
         ], 200);
@@ -89,7 +89,7 @@ class HomeController extends Controller
     }
     public function product($id)
     {
-        $product = Product::with(['tags.tagName'])->where('p_state', 1)->orderBy('p_order_by')->find($id);
+        $product = Product::with(['tags.tagName', 'extra'])->where('p_state', 1)->orderBy('p_order_by')->find($id);
         $tags = [];
         foreach ($product->tags as $key => $value) {
             array_push($tags, $value->pt_tag);
@@ -104,14 +104,14 @@ class HomeController extends Controller
     }
     public function productUser(Request $request, $id)
     {
-        $product = Product::with(['tags.tagName'])->where('p_state', 1)->orderBy('p_order_by')->find($id);
+        $product = Product::with(['tags.tagName', 'extra'])->where('p_state', 1)->orderBy('p_order_by')->find($id);
         $fav = Favorite::where('fa_user', $request->user()->id)->where('fa_product', $id)->first() == null ? false : true;
         $tags = [];
         foreach ($product->tags as $key => $value) {
             array_push($tags, $value->pt_tag);
         }
 
-        $recomanded = Producttag::with(['product'])->whereIn('pt_tag', $tags)->where('pt_product', '<>', $id)->get();
+        $recomanded = Producttag::with(['product.extra'])->whereIn('pt_tag', $tags)->where('pt_product', '<>', $id)->get();
         return response()->json([
             'product' => $product,
             'favorate' =>  $fav,
@@ -158,8 +158,10 @@ class HomeController extends Controller
     }
     public function bizzcoin()
     {
+        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
         $bizzcoin = Bizzpayment::where('bz_state', 1)->orderBy('created_at', 'DESC')->get();
         return response()->json([
+            'now' =>  $bizz,
             'bizzcoin' =>  $bizzcoin,
         ], 200);
     }
@@ -248,6 +250,10 @@ class HomeController extends Controller
             $cart->c_price_all =  $product->p_price;
             $cart->c_doc_id =  $doc_num; //GG
             $cart->c_product =  $product->id;
+            if($product->p_has_info == 1){
+                $cart->c_type =  1;
+            }
+            $cart->c_type =  $product->id;
             $cart->c_user = $request->user()->id;
             $cart->save();
             return response()->json([
@@ -306,7 +312,7 @@ class HomeController extends Controller
     public function onSearch($text)
     {
 
-        $product = Product::select(['id', 'p_name', 'p_name_ku', 'p_name_ar', 'p_name_pr', 'p_name_kr', 'p_price', 'p_image'])
+        $product = Product::with('extra')->select(['id', 'p_name', 'p_name_ku', 'p_name_ar', 'p_name_pr', 'p_name_kr', 'p_price', 'p_image'])
             ->where(function ($query) use ($text) {
                 $query->where('p_name', 'like', '%' . $text . '%');
                 $query->orWhere('p_name_ku', 'like', '%' . $text . '%');
@@ -325,27 +331,34 @@ class HomeController extends Controller
     {
         $cart = Cart::with(['product'])->where('c_user', $request->user()->id)->where('c_state', 0)->get();
         foreach ($cart as $key => $value) {
-            $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
-            if ($ci < $value->c_amount) {
-                return response()->json([
-                    'product' => $value->product,
-                    'error' => 'Out Of Stuck'
-                ], 200);
+            if ($value->product->p_has_info) {
+                $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
+                if ($ci < $value->c_amount) {
+                    return response()->json([
+                        'product' => $value->product,
+                        'error' => 'Out Of Stuck'
+                    ], 200);
+                }
             }
         }
         foreach ($cart as $key => $value) {
-            for ($i = 0; $i < $value->c_amount; $i++) {
-                $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
-                $checkout = new hasinfoProductCart;
-                $checkout->hpc_order = $value->c_doc_id;
-                $checkout->hpc_user =  $value->c_user;
-                $checkout->hpc_cardinfo =  $card->id;
-                $checkout->save();
-                $card->ci_state = 2;
-                $card->save();
+            if ($value->product->p_has_info) {
+                for ($i = 0; $i < $value->c_amount; $i++) {
+                    $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
+                    $checkout = new hasinfoProductCart;
+                    $checkout->hpc_order = $value->c_doc_id;
+                    $checkout->hpc_user =  $value->c_user;
+                    $checkout->hpc_cardinfo =  $card->id;
+                    $checkout->save();
+                    $card->ci_state = 2;
+                    $card->save();
+                }
+                $value->c_state = 1;
+                $value->save();
+            } else {
+                $value->c_state = 2;
+                $value->save();
             }
-            $value->c_state = 1;
-            $value->save();
         }
         return response()->json([
             'product' => "Done",
@@ -361,17 +374,17 @@ class HomeController extends Controller
     public function cartGroup(Request $request)
     {
         $cart =  DB::table('carts')
-        ->where('c_user', $request->user()->id)
-                 ->select('c_doc_id','created_at', DB::raw('sum(c_price_all) as price'))
-                 ->groupBy('c_doc_id','created_at')
-                 ->get();
+            ->where('c_user', $request->user()->id)
+            ->select('c_doc_id', 'created_at', DB::raw('sum(c_price_all) as price'))
+            ->groupBy('c_doc_id', 'created_at')
+            ->get();
         return response()->json([
             'cart' => $cart,
         ], 200);
     }
-    public function cartFinished(Request $request,$cart)
+    public function cartFinished(Request $request, $cart)
     {
-        $product = hasinfoProductCart::with(['info.product'])->where('hpc_user', $request->user()->id)->where('hpc_order',$cart)->get();
+        $product = hasinfoProductCart::with(['info.product'])->where('hpc_user', $request->user()->id)->where('hpc_order', $cart)->get();
         $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
         return response()->json([
             'product' => $product,
@@ -383,31 +396,28 @@ class HomeController extends Controller
         $company = Company::find($id);
         $product = Productcompany::with('images')->where('pc_company', $company->co_user)->get();
         return response()->json([
-            'product'=>$product
+            'product' => $product
         ], 200);
     }
-    // public function test(Request $request)
-    // {
-    // $method = 'aes-256-cbc';
-    // $secret_key = utf8_encode("965039792952d7a310234e1de59aad26");
-    // $decryptedString = openssl_decrypt( $request->header('X-Auth-Nonce') , $method, "2ed8s4xgzwknjl6i16z4yqpndh3xrg6j", 0, "e16ce913a20dadb8");
-    // $sig = hash_hmac('SHA256', utf8_encode($decryptedString . $request->header('X-Auth-Apikey')), $secret_key);
+    public function checkOutRedeem(Request $request)
+    {
 
-    // return response()->json([
-    //     'access' => 'OK',
-    // ], 200);
-    // }
+        return response()->json([
+            'product' => $product
+        ], 200);
+    }
     public function payment(Request $request)
     {
         $cart = Cart::with(['product'])->where('c_user', $request->user()->id)->where('c_state', 0)->get();
         foreach ($cart as $key => $value) {
-
-            $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
-            if ($ci < $value->c_amount) {
-                return response()->json([
-                    'product' => $value->product,
-                    'error' => 'Out Of Stuck'
-                ], 401);
+            if ($value->product->p_has_info) {
+                $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
+                if ($ci < $value->c_amount) {
+                    return response()->json([
+                        'product' => $value->product,
+                        'error' => 'Out Of Stuck'
+                    ], 401);
+                }
             }
         }
         $cart = Cart::with('product')->where('c_user', $request->user()->id)->where('c_state', 0)->orderBy('created_at', 'DESC')->get();
@@ -424,28 +434,28 @@ class HomeController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
             [
                 "currency" => "bizz",
-                "amount" => round($cart->sum('c_price_all') / $bizz,8),
+                "amount" => round($cart->sum('c_price_all') / $bizz, 8),
                 "callback_url" => route('web_hook'),
                 "web_hook_url" => route('web_hook'),
                 "remarks" => $cart[0]->c_doc_id,
                 "user_id" =>  $request->user()->id
             ]
         ));
-        
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'cache-control: no-cache',
             'content-type: multipart/form-data',
             'X-Auth-Apikey:' . $access_key,
             'X-Auth-Nonce:' . $nonce,
             'X-Auth-Signature:' . $sig,
-            ]);
-            
-            $result = curl_exec($ch);
-            
-            curl_close($ch);
+        ]);
 
-            // return json_decode($result);
-        $data = "BIZZ:" . json_decode($result)->address . "?amount=" . round($cart->sum('c_price_all') / $bizz,8);
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        // return json_decode($result);
+        $data = "BIZZ:" . json_decode($result)->address . "?amount=" . round($cart->sum('c_price_all') / $bizz, 8);
         $qrCode = new \Endroid\QrCode\QrCode($data);
         $qrCode->setWriterByName('png');
         $qrCode->setEncoding('UTF-8');
@@ -455,6 +465,80 @@ class HomeController extends Controller
             'result' => $result,
             'qr' => saveImageBase64($dataUri)
         ], 200);
-
     }
+    public function payment_redeem(Request $request)
+    {
+        $request->validate([
+            'company' => 'required|exists:companies,co_user',
+            'amount' => 'required|numeric|gt:0',
+        ]);
+        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
+
+        $nonce = time();
+        $access_key = "560e19cf972c8d6e";
+        $secret_key = "965039792952d7a310234e1de59aad26";
+        $sig = hash_hmac('SHA256', $nonce . $access_key, $secret_key);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://stage.stagebcoin.com/api/v2/peatio/account/latest/deposit_address");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
+            [
+                "currency" => "bizz",
+                "amount" => round($request->amount / $bizz, 8),
+                "callback_url" => route('web_hook'),
+                "web_hook_url" => route('web_hook'),
+                "remarks" =>    $request->company,
+                "user_id" =>  $request->user()->id
+            ]
+        ));
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'cache-control: no-cache',
+            'content-type: multipart/form-data',
+            'X-Auth-Apikey:' . $access_key,
+            'X-Auth-Nonce:' . $nonce,
+            'X-Auth-Signature:' . $sig,
+        ]);
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        $data = "BIZZ:" . json_decode($result)->address . "?amount=" . round($request->amount / $bizz, 8);
+        $qrCode = new \Endroid\QrCode\QrCode($data);
+        $qrCode->setWriterByName('png');
+        $qrCode->setEncoding('UTF-8');
+        $dataUri = $qrCode->writeDataUri();
+
+        return response()->json([
+            'result' => $result,
+            'dollar' => $request->amount,
+            'bizz' => $request->amount / $bizz,
+            'qr' => saveImageBase64($dataUri)
+        ], 200);
+    }
+    public function getRequestFromAPI(Request $request)
+    {
+        # code...
+    }
+    public function isNotificationAndCheckout(Request $request)
+    {
+        $cart = Cart::where('c_user', $request->user()->id)->where('c_state', 0)->get()->count();
+        return response()->json([
+            'cart' =>  $cart > 0,
+            'notification' =>  false,
+        ], 200);
+    }
+    // public function test(Request $request)
+    // {
+    // $method = 'aes-256-cbc';
+    // $secret_key = utf8_encode("965039792952d7a310234e1de59aad26");
+    // $decryptedString = openssl_decrypt( $request->header('X-Auth-Nonce') , $method, "2ed8s4xgzwknjl6i16z4yqpndh3xrg6j", 0, "e16ce913a20dadb8");
+    // $sig = hash_hmac('SHA256', utf8_encode($decryptedString . $request->header('X-Auth-Apikey')), $secret_key);
+
+    // return response()->json([
+    //     'access' => 'OK',
+    // ], 200);
+    // }
 }

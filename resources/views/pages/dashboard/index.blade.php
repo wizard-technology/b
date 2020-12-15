@@ -1,5 +1,22 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .list-group {
+        max-height: 340px;
+        overflow-x: hidden; // hide horizontal
+
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    .my-custom-scrollbar {
+position: relative;
+height: 200px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
@@ -87,7 +104,7 @@
                 <h6 class="text-uppercase mb-3">Profit</h6>
                 <div class="float-right">
                 </div>
-                <h4 class="mb-0">52410<small class="ml-2"></small></h4>
+                <h4 class="mb-0">{{ $profit->sum('c_price_all')}}<small class="ml-2"></small></h4>
             </div>
         </div>
     </div>
@@ -116,7 +133,8 @@
                                 </div>
                                 <div class="col-2"></div>
                                 <div class=" col-6 justify-content-center">
-                                    <h4 class="ml-2">User</h4><h1>{{$user}}</h1>
+                                    <h4 class="ml-2">User</h4>
+                                    <h1>{{$user}}</h1>
                                 </div>
                             </div>
                         </div>
@@ -124,11 +142,13 @@
                             <div class="row">
                                 <div class="row col-2 justify-content-center"
                                     style="height: 60px;width: 60px;background-color:#F1F4FF;  border-radius: 10px;margin-left: 20px">
-                                    <i style="color: #92B7FF" class="col-12 align-self-center" data-feather="briefcase"></i>
+                                    <i style="color: #92B7FF" class="col-12 align-self-center"
+                                        data-feather="briefcase"></i>
                                 </div>
                                 <div class="col-2"></div>
                                 <div class=" col-6 justify-content-center">
-                                    <h4 class="ml-2">Company</h4><h1>{{$company}}</h1>
+                                    <h4 class="ml-2">Company</h4>
+                                    <h1>{{$company}}</h1>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +163,16 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="mt-0 mb-3 header-title">Top Companies</h4>
-                <div style="height: 340px;"></div>
+                <div style="height: 340px;">
+                    <ul class="list-group">
+                        @foreach ($top_company as $key=>$value)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{$value->company->co_name}}
+                            <span class="badge badge-primary badge-pill">{{count($value->product)}}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -151,7 +180,38 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="mt-0 mb-3 header-title">Trending</h4>
-                <div style="height: 340px;"></div>
+                <div style="height: 340px;" class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead style="visibility: hidden">
+                                <tr>
+                                    <th class="border-top-0 w-60">Image</th>
+                                    <th class="border-top-0">Name</th>
+                                    <th class="border-top-0">Ordered Times #</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach ($trending as $key => $value)
+                                <tr>
+                                    <td>
+                                        <img class="rounded-circle" src="{{asset('storage/'.$value->product->p_image)}}" alt="user"
+                                            width="40" height="40px">
+                                    </td>
+                                    <td>
+                                        <a href="{{route('dashboard.product.show',$value->product->id)}}" class="text-dark">{{$value->product->p_name}} / {{$value->product->p_name_ku}}</a>
+                                    </td>
+
+                                    <td>{{$value->total}}</td>
+                                   
+                                </tr>
+                              
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -161,7 +221,13 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="mt-0 mb-3 header-title">Analytics</h4>
-                <div style="height: 340px;"></div>
+                <div class="center">
+
+                    <center>
+                        <canvas id="myChart"></canvas>
+
+                    </center>
+                </div>
             </div>
         </div>
     </div>
@@ -170,5 +236,80 @@
     function submite(form) {
         form.parentElement.parentElement.parentElement.submit();
     }
+</script>
+<script src="{{asset('assets/plugins/chart.js/chart.min.js')}}"></script>
+<script>
+    var json = '{!! $chart !!}';
+    var datas = JSON.parse(json);
+    console.log(datas);
+    var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels:["January", "February", "March", "April", "May", "June", "July", "August", "September","October","November","December"],
+    datasets: [{
+      label: '# Profit by Month in '+ new Date().getFullYear(),
+      data: [datas['January'],datas['February'],datas['March'],datas['April'],datas['May'],datas['June'],datas['July'],datas['August'],datas['September'],datas['October'],datas['November'],datas['December']],
+      backgroundColor: [
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+        'rgba(255, 230, 106,0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)',
+        'rgba(255, 230, 106,1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      xAxes: [{
+        ticks: {
+          maxRotation: 90,
+          minRotation: 80
+        },
+          gridLines: {
+          offsetGridLines: true // à rajouter
+        }
+      },
+      {
+        position: "top",
+        ticks: {
+          maxRotation: 90,
+          minRotation: 80
+        },
+        gridLines: {
+          offsetGridLines: true // et matcher pareil ici
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
 </script>
 @endsection

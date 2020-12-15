@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Imageproduct;
+use App\RedeemCode;
 use Illuminate\Http\Request;
 
-class ImageproductController extends Controller
+class RedeemCodeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class ImageproductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Imageproduct  $imageproduct
+     * @param  \App\RedeemCode  $redeemCode
      * @return \Illuminate\Http\Response
      */
-    public function show(Imageproduct $imageproduct)
+    public function show(RedeemCode $redeemCode)
     {
         //
     }
@@ -52,10 +52,10 @@ class ImageproductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Imageproduct  $imageproduct
+     * @param  \App\RedeemCode  $redeemCode
      * @return \Illuminate\Http\Response
      */
-    public function edit(Imageproduct $imageproduct)
+    public function edit(RedeemCode $redeemCode)
     {
         //
     }
@@ -64,10 +64,10 @@ class ImageproductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Imageproduct  $imageproduct
+     * @param  \App\RedeemCode  $redeemCode
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Imageproduct $imageproduct)
+    public function update(Request $request, RedeemCode $redeemCode)
     {
         //
     }
@@ -75,10 +75,10 @@ class ImageproductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Imageproduct  $imageproduct
+     * @param  \App\RedeemCode  $redeemCode
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Imageproduct $imageproduct)
+    public function destroy(RedeemCode $redeemCode)
     {
         //
     }

@@ -58,5 +58,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Logger::class, 'log_admin');
     }
-   
+    public function product()
+    {
+        return $this->hasMany(Productcompany::class, 'pc_company');
+    }
+  
 }

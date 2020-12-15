@@ -252,21 +252,21 @@
                                                                         
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-group row">
-                                                                        <label
-                                                                            class="col-sm-2 col-form-label">Picture</label>
-                                                                        <div class="col-sm-10">
-                                                                            <input type="file"
-                                                                                id="actual-upload-{{$value->company->id}}"
-                                                                                onchange="readURLS(this,{{$value->company->id}});"
-                                                                                name="imgs" style="display: none">
-                                                                            <div class="pull-right"
-                                                                                id="upload-{{$value->company->id}}"
-                                                                                onclick="clickFileChooser({{$value->company->id}})"
-                                                                                style="height: 200px;width: 200px;background-image: url({{asset('storage/'.$value->company->co_image) }});background-size: contain;background-repeat: no-repeat;">
+                                                                        <div class="form-group row">
+                                                                            <label
+                                                                                class="col-sm-2 col-form-label">Picture</label>
+                                                                            <div class="col-sm-10">
+                                                                                <input type="file"
+                                                                                    id="actual-upload-{{$value->company->id}}"
+                                                                                    onchange="readURLS(this,{{$value->company->id}});"
+                                                                                    name="imgs" style="display: none">
+                                                                                <div class="pull-right"
+                                                                                    id="upload-{{$value->company->id}}"
+                                                                                    onclick="clickFileChooser({{$value->company->id}})"
+                                                                                    style="height: 200px;width: 200px;background-image: url({{asset('storage/'.$value->company->co_image) }});background-size: contain;background-repeat: no-repeat;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
                                                                     <div class="form-group mb-0 row">
                                                                         <div class="col-md-9">
                                                                             <div class="form-check-inline my-1">

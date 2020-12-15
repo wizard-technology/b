@@ -41,7 +41,12 @@ Route::name('dashboard.')->prefix('dashboard')->middleware(['isAdmin'])->group(
                 Route::resource('product', 'ProductController');
                 Route::resource('card', 'CardinfoController');
                 Route::resource('support', 'HelpController');
-                Route::resource('cart', 'CartController');
+                Route::get('order/finished', 'CartController@finished')->name('order.finished');
+                Route::get('order/card', 'CartController@card')->name('order.card');
+                Route::get('order/rejected', 'CartController@rejected')->name('order.rejected');
+                Route::delete('order/delete/cart/{id}', 'CartController@cart_delete')->name('order.cart_delete');
+                Route::get('order/change/{id}/{type}', 'CartController@change_state')->name('order.change_state');
+                Route::resource('order', 'CartController');
                 Route::resource('employee', 'EmployeeController');
                 Route::resource('company', 'CompanyController');
                 Route::resource('bizzcoin', 'BizzpaymentController');
@@ -50,6 +55,8 @@ Route::name('dashboard.')->prefix('dashboard')->middleware(['isAdmin'])->group(
                 Route::post('/product/subctegory', 'ProductController@getSub')->name('product.subctegory');
                 Route::post('/product/grouped', 'ProductController@getGr')->name('product.grouped');
                 Route::post('setting/more/{id}', 'SettingController@more')->name('setting.more');
+                Route::post('extra/image/{id}', 'ProductController@extra_image')->name('product.extra_image');
+                Route::delete('extra/delete/{id}', 'ProductController@extra_delete')->name('product.extra_delete');
             }
         );
     }
