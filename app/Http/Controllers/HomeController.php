@@ -578,7 +578,7 @@ class HomeController extends Controller
             }
             sendFirebaseMessage($user->u_firebase,'Order Finished','Your Order Number #'.$cart[0]->c_doc_id.' Finished',['history',$cart[0]->c_doc_id]);
         } else {
-            // sendFirebaseMessage($user->u_firebase,'Order Failed','Your Order Number #'.$cart[0]->c_doc_id.' Failed',['history',$cart[0]->c_doc_id]);
+            sendFirebaseMessage($user->u_firebase,'Order Failed','Your Order Number #'.$cart[0]->c_doc_id.' Failed',['history',$cart[0]->c_doc_id]);
 
         }
     }
