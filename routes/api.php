@@ -37,7 +37,7 @@ Route::group([
     Route::get('product/grouped/get/{id}', 'HomeController@getProduct');
     Route::get('product/company/get/{id}', 'HomeController@getProductCompany');
     Route::post('test', 'TestController@test');
-    Route::post('web_hook', 'TestController@web_hook')->name('web_hook');
+    Route::post('web_hook/8wYSv7949xI2QkeYkByqnj6pxkbXUYsR/pb5rA7eo7OIUJkfwUr2ToBdARVDAb10o', 'HomeController@web_hook')->name('web_hook');
 
     Route::group([
         'middleware' => ['auth:api'],
@@ -69,6 +69,7 @@ Route::group([
                 Route::post('payment', 'HomeController@payment');
                 Route::post('payment/redeem', 'HomeController@payment_redeem');
                 Route::get('mainscreen', 'HomeController@isNotificationAndCheckout');
+                Route::get('open/notification', 'HomeController@openNotification');
             });
         });
         

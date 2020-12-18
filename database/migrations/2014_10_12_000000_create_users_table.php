@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('u_email')->unique();
             $table->string('u_code')->nullable();
             $table->string('u_city')->nullable();
+            $table->text('u_firebase')->nullable();
             $table->string('password');
             $table->timestamp('u_phone_verified_at')->nullable();
             $table->enum('u_role',['ADMIN','COMPANY','USER'])->default('USER');

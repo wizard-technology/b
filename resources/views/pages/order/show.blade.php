@@ -31,6 +31,8 @@
                 href="{{route('dashboard.order.change_state',['id'=>$data[0]->c_doc_id,'type'=>'pending'])}}">Pending</a>
             <a class="btn btn-danger btn-lg mr-3 {{$data[0]->c_state == 3 ? 'disabled' : ''}}"
                 href="{{route('dashboard.order.change_state',['id'=>$data[0]->c_doc_id,'type'=>'reject'])}}">Reject</a>
+            <a class="btn btn-success btn-lg mr-3 {{$data[0]->c_state == 4 ? 'disabled' : ''}}"
+                href="{{route('dashboard.order.change_state',['id'=>$data[0]->c_doc_id,'type'=>'accept'])}}">Accept</a>
         </div>
     </div>
 </div>

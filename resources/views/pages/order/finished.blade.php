@@ -42,6 +42,9 @@
                     <li class="nav-item">
                         <a class="nav-link " href="{{route('dashboard.order.rejected')}}">Rejected Order</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{route('dashboard.order.accept')}}">Accept Order</a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -77,8 +80,8 @@
                                                     <td>{{$value->c_amount}}</td>
                                                     <td>{{$value->user->u_first_name}} {{$value->user->u_second_name}}
                                                     </td>
-                                                    <td>{{$value->user->u_phone}} {{$value->user->u_phone}}
-                                                    </td><td>{{$value->user->u_phone}}
+                                                    <td>{{$value->user->u_phone}}
+                                                    </td>
                                                     <td>{{$value->created_at}}</td>
                                                     <td>
                                                         <div class="btn-group m-b-10">
@@ -87,9 +90,10 @@
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">Actions</button>
                                                             <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="{{route('dashboard.order.show',['id'=>$value->c_doc_id])}}">Show Order</a>
+                                                                <a class="dropdown-item" href="{{route('dashboard.order.show',$value->c_doc_id)}}">Show Order</a>
                                                                 <a class="dropdown-item" href="{{route('dashboard.order.change_state',['id'=>$value->c_doc_id,'type'=>'reject'])}}">Reject</a>
                                                                 <a class="dropdown-item" href="{{route('dashboard.order.change_state',['id'=>$value->c_doc_id,'type'=>'pending'])}}">Pending</a>
+                                                                <a class="dropdown-item" href="{{route('dashboard.order.change_state',['id'=>$value->c_doc_id,'type'=>'accept'])}}">Accept</a>
                                                                 <div class="dropdown-divider"></div>
                                                                 <form
                                                                      action="{{route('dashboard.order.cart_delete',$value->c_doc_id)}}"

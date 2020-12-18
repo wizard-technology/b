@@ -13,6 +13,7 @@ use App\Grouped;
 use App\hasinfoProductCart;
 use App\Help;
 use App\Http\Controllers\Controller;
+use App\Notification;
 use App\Product;
 use App\Productcompany;
 use App\Producttag;
@@ -250,10 +251,9 @@ class HomeController extends Controller
             $cart->c_price_all =  $product->p_price;
             $cart->c_doc_id =  $doc_num; //GG
             $cart->c_product =  $product->id;
-            if($product->p_has_info == 1){
+            if ($product->p_has_info == 1) {
                 $cart->c_type =  1;
             }
-            $cart->c_type =  $product->id;
             $cart->c_user = $request->user()->id;
             $cart->save();
             return response()->json([
@@ -329,40 +329,40 @@ class HomeController extends Controller
     }
     public function checkOut(Request $request)
     {
-        $cart = Cart::with(['product'])->where('c_user', $request->user()->id)->where('c_state', 0)->get();
-        foreach ($cart as $key => $value) {
-            if ($value->product->p_has_info) {
-                $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
-                if ($ci < $value->c_amount) {
-                    return response()->json([
-                        'product' => $value->product,
-                        'error' => 'Out Of Stuck'
-                    ], 200);
-                }
-            }
-        }
-        foreach ($cart as $key => $value) {
-            if ($value->product->p_has_info) {
-                for ($i = 0; $i < $value->c_amount; $i++) {
-                    $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
-                    $checkout = new hasinfoProductCart;
-                    $checkout->hpc_order = $value->c_doc_id;
-                    $checkout->hpc_user =  $value->c_user;
-                    $checkout->hpc_cardinfo =  $card->id;
-                    $checkout->save();
-                    $card->ci_state = 2;
-                    $card->save();
-                }
-                $value->c_state = 1;
-                $value->save();
-            } else {
-                $value->c_state = 2;
-                $value->save();
-            }
-        }
-        return response()->json([
-            'product' => "Done",
-        ], 200);
+        // $cart = Cart::with(['product'])->where('c_user', $request->user()->id)->where('c_state', 0)->get();
+        // foreach ($cart as $key => $value) {
+        //     if ($value->product->p_has_info) {
+        //         $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
+        //         if ($ci < $value->c_amount) {
+        //             return response()->json([
+        //                 'product' => $value->product,
+        //                 'error' => 'Out Of Stuck'
+        //             ], 200);
+        //         }
+        //     }
+        // }
+        // foreach ($cart as $key => $value) {
+        //     if ($value->product->p_has_info) {
+        //         for ($i = 0; $i < $value->c_amount; $i++) {
+        //             $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
+        //             $checkout = new hasinfoProductCart;
+        //             $checkout->hpc_order = $value->c_doc_id;
+        //             $checkout->hpc_user =  $value->c_user;
+        //             $checkout->hpc_cardinfo =  $card->id;
+        //             $checkout->save();
+        //             $card->ci_state = 2;
+        //             $card->save();
+        //         }
+        //         $value->c_state = 1;
+        //         $value->save();
+        //     } else {
+        //         $value->c_state = 2;
+        //         $value->save();
+        //     }
+        // }
+        // return response()->json([
+        //     'product' => "Done",
+        // ], 200);
     }
     public function company()
     {
@@ -375,6 +375,7 @@ class HomeController extends Controller
     {
         $cart =  DB::table('carts')
             ->where('c_user', $request->user()->id)
+            ->where('c_state', '<>', 0)
             ->select('c_doc_id', 'created_at', DB::raw('sum(c_price_all) as price'))
             ->groupBy('c_doc_id', 'created_at')
             ->get();
@@ -385,10 +386,16 @@ class HomeController extends Controller
     public function cartFinished(Request $request, $cart)
     {
         $product = hasinfoProductCart::with(['info.product'])->where('hpc_user', $request->user()->id)->where('hpc_order', $cart)->get();
+        $type = true;
+        if ($product->isEmpty()) {
+            $product = Cart::with(['product'])->where('c_doc_id', $cart)->get();
+            $type = false;
+        }
         $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
         return response()->json([
             'product' => $product,
             'bizzcoin' => $bizz,
+            'type' => $type,
         ], 200);
     }
     public function getProductCompany($id)
@@ -436,7 +443,7 @@ class HomeController extends Controller
                 "currency" => "bizz",
                 "amount" => round($cart->sum('c_price_all') / $bizz, 8),
                 "callback_url" => route('web_hook'),
-                "web_hook_url" => route('web_hook'),
+                "web_hook_url" => route('index'),
                 "remarks" => $cart[0]->c_doc_id,
                 "user_id" =>  $request->user()->id
             ]
@@ -515,27 +522,64 @@ class HomeController extends Controller
             'qr' => saveImageBase64($dataUri)
         ], 200);
     }
-    public function getRequestFromAPI(Request $request)
-    {
-        # code...
-    }
     public function isNotificationAndCheckout(Request $request)
     {
         $cart = Cart::where('c_user', $request->user()->id)->where('c_state', 0)->get()->count();
+        $notification = Notification::where('noti_user', $request->user()->id)->where('noti_state', 0)->get()->count();
         return response()->json([
             'cart' =>  $cart > 0,
-            'notification' =>  false,
+            'notification' => $notification > 0,
         ], 200);
     }
-    // public function test(Request $request)
-    // {
-    // $method = 'aes-256-cbc';
-    // $secret_key = utf8_encode("965039792952d7a310234e1de59aad26");
-    // $decryptedString = openssl_decrypt( $request->header('X-Auth-Nonce') , $method, "2ed8s4xgzwknjl6i16z4yqpndh3xrg6j", 0, "e16ce913a20dadb8");
-    // $sig = hash_hmac('SHA256', utf8_encode($decryptedString . $request->header('X-Auth-Apikey')), $secret_key);
+    public function openNotification(Request $request)
+    {
+        $notification = Notification::where('noti_user', $request->user()->id);
+        $notification->update(['noti_state' => 1]);
+        return response()->json([
+            'notification' => $notification->orderBy('created_at', 'DESC')->get(),
+        ], 200);
+    }
 
-    // return response()->json([
-    //     'access' => 'OK',
-    // ], 200);
-    // }
+
+    public function web_hook(Request $request)
+    {
+        $user = User::findOrFail($request->header('user-id'));
+        if ($request->input('status') == 'succeed') {
+            $cart = Cart::with(['product'])->where('c_doc_id', $request->header('user-id'))->where('c_state', 0)->get();
+            foreach ($cart as $key => $value) {
+                if ($value->product->p_has_info) {
+                    $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
+                    if ($ci < $value->c_amount) {
+                        return response()->json([
+                            'product' => $value->product,
+                            'error' => 'Out Of Stuck'
+                        ], 200);
+                    }
+                }
+            }
+            foreach ($cart as $key => $value) {
+                if ($value->product->p_has_info) {
+                    for ($i = 0; $i < $value->c_amount; $i++) {
+                        $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
+                        $checkout = new hasinfoProductCart;
+                        $checkout->hpc_order = $value->c_doc_id;
+                        $checkout->hpc_user =  $value->c_user;
+                        $checkout->hpc_cardinfo =  $card->id;
+                        $checkout->save();
+                        $card->ci_state = 2;
+                        $card->save();
+                    }
+                    $value->c_state = 1;
+                    $value->save();
+                } else {
+                    $value->c_state = 2;
+                    $value->save();
+                }
+            }
+            sendFirebaseMessage($user->u_firebase,'Order Finished','Your Order Number #'.$cart[0]->c_doc_id.' Finished',['history',$cart[0]->c_doc_id]);
+        } else {
+            // sendFirebaseMessage($user->u_firebase,'Order Failed','Your Order Number #'.$cart[0]->c_doc_id.' Failed',['history',$cart[0]->c_doc_id]);
+
+        }
+    }
 }

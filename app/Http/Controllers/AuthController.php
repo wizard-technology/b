@@ -42,6 +42,7 @@ class AuthController extends Controller
             $user->u_email = $request->email;
             $user->password = bcrypt($request->password);
             $user->u_code = $random;
+            $user->u_firebase =$request->notification ?? null;
             $user->save();
             // Nexmo::message()->send([
             //     'to'   => "+964".ltrim($request->phone, '0'),
@@ -98,6 +99,9 @@ class AuthController extends Controller
             }
         }
         $user = $request->user();
+        $user->u_firebase =$request->notification ?? null;
+        $user->save();
+
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         $token->expires_at = Carbon::now()->addWeeks(1);
@@ -181,6 +185,7 @@ class AuthController extends Controller
         if ($request->code == $user->u_code) {
             $user->u_code = null;
             $user->password = bcrypt($request->password);
+            $user->u_firebase =$request->notification ?? null;
             $user->save();
             if (!is_null($request->phone)) {
                 if (!Auth::attempt(['u_phone' => $request->phone, 'password' => $request->password])) {

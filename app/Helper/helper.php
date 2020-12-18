@@ -54,3 +54,38 @@ function getIpAddress()
     }
     return $ip_address;
 }
+
+function sendFirebaseMessage($token, $title, $body,$screen)
+{
+    $url = "https://fcm.googleapis.com/fcm/send";
+    // $token = "ca9zi9scRxe1E9pZ3VPEed:APA91bH-SY6CNfTVkw3TnyPiuZ3OTopCBsPZGzt7t193SrumtmmvR0juks9Bs6Zlc_sO-r4BdfbsNiirjF71eE86vfzzOCIRObEjYtHNA1Enklhjs_vSrlywe716b4a0qRejcJnNNEEJ"; 
+    $serverKey = 'AAAAMwt8Pjs:APA91bFLX3FKrfFz92f4fEE0WllFXM2iI49pXd6q6fjMv3xd-DXvXtq43eP7_82tCSuFewaO2mpdGpA9BZm8sA8SFwkcvLfryMrb4ISowH_k04FBnSn_wXKE7KLd-t1Fpa8Fa9Kq7oMh';
+    //$title = "Notification title"; 
+    //$body = "Hello I am from Your php server"; 
+    $notification = array(
+        'title' => $title,
+        'body' => $body,
+        'sound' => 'default',
+        'badge' => '1',
+    );
+    $arrayToSend = array(
+        'to' => $token,
+        'notification' => $notification,
+        'data' => ['screen'=>$screen],
+        'priority' => 'high',
+    );
+    $json = json_encode($arrayToSend);
+    $headers = array();
+    $headers[] = 'Content-Type: application/json';
+    $headers[] = 'Authorization: key=' . $serverKey;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //Send the request 
+    $response = curl_exec($ch);
+    // dd($response);
+}
+

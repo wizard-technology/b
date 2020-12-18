@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Help;
 use App\Logger;
+use App\Notification;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -50,6 +51,13 @@ class HelpController extends Controller
         $help->h_from = session('dashboard');
         $help->h_state = 0;
         $help->save();
+        $notification =new Notification;
+        $notification->noti_title = 'Your report has been answered by the system';
+        $notification->noti_content = $request->report;
+        $notification->noti_user = $request->user;
+        $notification->noti_id_opened = $help->id;
+        $notification->noti_type = 0;
+        $notification->save();
         Logger::create([
             'log_name' => 'Support',
             'log_action' => 'Create',

@@ -19,6 +19,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        // sendFirebaseMessage('dSaE61UCS1aUcliffioXap:APA91bGbMs7nzcpvaAlBuScAXleTbSRB6hZ-e_am32sYJ1EaTRc3xH-WJAAspZ_pzq_1av6UEJpwNC9sdT8aGhm_GMcNAhQg844ZcIRtXTFww_ih9CSowI2rjSelMZge8GdcJZW5yiyW','Hi','Hello');
         $city = City::where('ct_state', 1)->get();
         $data = User::with(['company.admin', 'city'])->where('u_role', 'COMPANY')->orderBy('u_state')->get();
         return view('pages.company.index', ['data' => $data, 'city' => $city]);

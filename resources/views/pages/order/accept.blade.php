@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title">Cards Order</h4>
+            <h4 class="page-title">Finished Order</h4>
         </div>
     </div>
 </div>
@@ -37,13 +37,13 @@
                         <a class="nav-link " href="{{route('dashboard.order.index')}}">Pending Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('dashboard.order.finished')}}">Finished Order</a>
+                        <a class="nav-link " href="{{route('dashboard.order.finished')}}">Finished Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active"  href="{{route('dashboard.order.card')}}">Cards Order</a>
+                        <a class="nav-link " href="{{route('dashboard.order.rejected')}}">Rejected Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link "  href="{{route('dashboard.order.rejected')}}">Rejected Order</a>
+                        <a class="nav-link active" href="{{route('dashboard.order.accept')}}">Accept Order</a>
                     </li>
                 </ul>
                 <!-- Tab panes -->
@@ -54,7 +54,7 @@
                                 <div class="card">
                                     <div class="card-body">
 
-                                        <h4 class="mt-0 header-title">Cards Order table</h4>
+                                        <h4 class="mt-0 header-title">Finished Order table</h4>
                                         <table id="datatable-buttons"
                                             class="table table-striped table-bordered dt-responsive nowrap"
                                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -66,45 +66,57 @@
                                                     <th>Price All</th>
                                                     <th>Amount</th>
                                                     <th>User</th>
+                                                    <th>User Phone</th>
                                                     <th>Created At</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($data as $key=>$value)
-                                                <td>{{++$key}}</td>
-                                                <td>{{$value->c_doc_id}}</td>
-                                                <td>{{$value->c_price_all}}</td>
-                                                <td>{{$value->c_amount}}</td>
-                                                <td>{{$value->user->u_first_name}} {{$value->user->u_second_name}}</td>
-                                                <td>{{$value->created_at}}</td>
-                                                <td>
-                                                    <div class="btn-group m-b-10">
-                                                        <button type="button"
-                                                            class="btn btn-primary dropdown-toggle"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">Actions</button>
-                                                        <div class="dropdown-menu">
-                                                            <form
-                                                                {{-- action="{{route('dashboard.type.destroy',$value->id)}}" --}}
-                                                                method="post">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="dropdown-item text-danger">Delete</button>
-                                                            </form>
+                                                <tr>
+                                                    <td>{{++$key}}</td>
+                                                    <td>{{$value->c_doc_id}}</td>
+                                                    <td>${{$value->c_price_all}}</td>
+                                                    <td>{{$value->c_amount}}</td>
+                                                    <td>{{$value->user->u_first_name}} {{$value->user->u_second_name}}
+                                                    </td>
+                                                    <td>{{$value->user->u_phone}}
+                                                    </td>
+                                                    <td>{{$value->created_at}}</td>
+                                                    <td>
+                                                        <div class="btn-group m-b-10">
+                                                            <button type="button"
+                                                                class="btn btn-primary dropdown-toggle"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">Actions</button>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="{{route('dashboard.order.show',$value->c_doc_id)}}">Show Order</a>
+                                                                <a class="dropdown-item" href="{{route('dashboard.order.change_state',['id'=>$value->c_doc_id,'type'=>'reject'])}}">Reject</a>
+                                                                <a class="dropdown-item" href="{{route('dashboard.order.change_state',['id'=>$value->c_doc_id,'type'=>'pending'])}}">Pending</a>
+                                                                <a class="dropdown-item" href="{{route('dashboard.order.change_state',['id'=>$value->c_doc_id,'type'=>'finish'])}}">Finish</a>
 
+                                                                <div class="dropdown-divider"></div>
+                                                                <form
+                                                                     action="{{route('dashboard.order.cart_delete',$value->c_doc_id)}}"
+                                                                     method="post">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="dropdown-item text-danger">Delete</button>
+                                                                </form>
+
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                @endforeach 
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div> <!-- end col -->
                         </div> <!-- end row -->
-                    </div>                
+                    </div>
                 </div>
 
             </div>

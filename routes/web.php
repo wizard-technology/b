@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.index');
-});
+})->name('index');
 Route::get('/dashboard/login', 'AdminLogin@login')->name('dashboard.login');
 Route::post('/dashboard/signup', 'AdminLogin@signup')->name('dashboard.signup');
 Route::post('/dashboard/login', 'AdminLogin@check')->name('dashboard.check');
@@ -44,6 +44,7 @@ Route::name('dashboard.')->prefix('dashboard')->middleware(['isAdmin'])->group(
                 Route::get('order/finished', 'CartController@finished')->name('order.finished');
                 Route::get('order/card', 'CartController@card')->name('order.card');
                 Route::get('order/rejected', 'CartController@rejected')->name('order.rejected');
+                Route::get('order/accept', 'CartController@accept')->name('order.accept');
                 Route::delete('order/delete/cart/{id}', 'CartController@cart_delete')->name('order.cart_delete');
                 Route::get('order/change/{id}/{type}', 'CartController@change_state')->name('order.change_state');
                 Route::resource('order', 'CartController');
