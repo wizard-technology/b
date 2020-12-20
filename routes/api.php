@@ -58,7 +58,6 @@ Route::group([
                 Route::get('product/user/{id}', 'HomeController@productUser');
                 Route::post('favorate/{id}', 'HomeController@favorate');
                 Route::get('favorates', 'HomeController@favorateGet');
-               
                 Route::post('addToCart', 'HomeController@addToCart');
                 Route::get('cart', 'HomeController@cartGet');
                 Route::get('history', 'HomeController@cartGroup');

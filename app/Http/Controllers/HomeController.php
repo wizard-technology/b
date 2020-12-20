@@ -545,41 +545,43 @@ class HomeController extends Controller
     {
         $user = User::findOrFail($request->header('user-id'));
         if ($request->input('status') == 'succeed') {
-            $cart = Cart::with(['product'])->where('c_doc_id', $request->header('user-id'))->where('c_state', 0)->get();
-            foreach ($cart as $key => $value) {
-                if ($value->product->p_has_info) {
-                    $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
-                    if ($ci < $value->c_amount) {
-                        return response()->json([
-                            'product' => $value->product,
-                            'error' => 'Out Of Stuck'
-                        ], 200);
+            $cart = Cart::with(['product'])->where('c_doc_id', $request->header('order-id'))->where('c_state', 0)->get();
+            if (!$cart->isEmpty()) {
+                foreach ($cart as $key => $value) {
+                    if ($value->product->p_has_info) {
+                        $ci = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->count();
+                        if ($ci < $value->c_amount) {
+                            return response()->json([
+                                'product' => $value->product,
+                                'error' => 'Out Of Stuck'
+                            ], 200);
+                        }
                     }
                 }
-            }
-            foreach ($cart as $key => $value) {
-                if ($value->product->p_has_info) {
-                    for ($i = 0; $i < $value->c_amount; $i++) {
-                        $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
-                        $checkout = new hasinfoProductCart;
-                        $checkout->hpc_order = $value->c_doc_id;
-                        $checkout->hpc_user =  $value->c_user;
-                        $checkout->hpc_cardinfo =  $card->id;
-                        $checkout->save();
-                        $card->ci_state = 2;
-                        $card->save();
-                    }
-                    $value->c_state = 1;
-                    $value->save();
-                } else {
-                    $value->c_state = 2;
-                    $value->save();
-                }
-            }
-            sendFirebaseMessage($user->u_firebase,'Order Finished','Your Order Number #'.$cart[0]->c_doc_id.' Finished',['history',$cart[0]->c_doc_id]);
-        } else {
-            sendFirebaseMessage($user->u_firebase,'Order Failed','Your Order Number #'.$cart[0]->c_doc_id.' Failed',['history',$cart[0]->c_doc_id]);
 
+                foreach ($cart as $key => $value) {
+                    if ($value->product->p_has_info) {
+                        for ($i = 0; $i < $value->c_amount; $i++) {
+                            $card = Cardinfo::where('ci_product', $value->product->id)->where('ci_state', 1)->first();
+                            $checkout = new hasinfoProductCart;
+                            $checkout->hpc_order = $value->c_doc_id;
+                            $checkout->hpc_user =  $value->c_user;
+                            $checkout->hpc_cardinfo =  $card->id;
+                            $checkout->save();
+                            $card->ci_state = 2;
+                            $card->save();
+                        }
+                        $value->c_state = 1;
+                        $value->save();
+                    } else {
+                        $value->c_state = 2;
+                        $value->save();
+                    }
+                }
+                sendFirebaseMessage($user->u_firebase, 'Order Finished', 'Your Order Number #' .  $request->header('order-id') . ' Finished', ['history',  $request->header('order-id')]);
+            } else {
+                sendFirebaseMessage($user->u_firebase, 'Order Failed', 'Your Order Number #' .  $request->header('order-id') . ' Failed', ['history',  $request->header('order-id')]);
+            }
         }
     }
 }
