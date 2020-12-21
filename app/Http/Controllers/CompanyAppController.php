@@ -6,6 +6,7 @@ use App\City;
 use App\Company;
 use App\Imageproductcompany;
 use App\Productcompany;
+use App\RedeemCode;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -200,6 +201,31 @@ class CompanyAppController extends Controller
         return response()->json([
             'product'=>$product
         ], 200);
+    }
+    public function getRedeem(Request $request)
+    {
+        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',1)->orderBy('rc_state')->limit(30)->get();
+        return response()->json([
+            'redeem'=>$redeem
+        ], 200);
+    }
+    public function scanRedeem(Request $request)
+    {
+        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',0)->where('rc_code',$request->code)->first();
+        if(empty($redeem)){
+            return response()->json([
+                'error'=>'Code Used or Wrong'
+            ], 400);
+        }else{
+            $redeem->rc_state = 1;
+            $redeem->save();
+            return response()->json([
+                'redeem'=>$redeem
+            ], 200);
+
+        }
+
+        
     }
 
 }

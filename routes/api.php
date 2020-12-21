@@ -38,6 +38,7 @@ Route::group([
     Route::get('product/company/get/{id}', 'HomeController@getProductCompany');
     Route::post('test', 'TestController@test');
     Route::post('web_hook/8wYSv7949xI2QkeYkByqnj6pxkbXUYsR/pb5rA7eo7OIUJkfwUr2ToBdARVDAb10o', 'HomeController@web_hook')->name('web_hook');
+    Route::post('web_hook/redeem/8wYSv7949xI2QkeYkByqnj6pxkbXUYsR/pb5rA7eo7OIUJkfwUr2ToBdARVDAb10o', 'HomeController@web_hook_redeem')->name('web_hook.redeem');
 
     Route::group([
         'middleware' => ['auth:api'],
@@ -65,10 +66,12 @@ Route::group([
                 Route::post('cart/delete', 'HomeController@cartDelete');
                 Route::post('cart/amount', 'HomeController@amountChange');
                 Route::post('checkout', 'HomeController@checkOut');
+                // Route::post('buy/', 'HomeController@checkOutRedeem');
                 Route::post('payment', 'HomeController@payment');
                 Route::post('payment/redeem', 'HomeController@payment_redeem');
                 Route::get('mainscreen', 'HomeController@isNotificationAndCheckout');
                 Route::get('open/notification', 'HomeController@openNotification');
+                Route::get('get/redeem/code', 'HomeController@getRedeem');
             });
         });
         

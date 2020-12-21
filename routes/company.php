@@ -37,6 +37,9 @@ Route::group(
                 Route::post('product/company/delete', 'CompanyAppController@deleteProduct');
                 Route::post('product/company/image', 'CompanyAppController@addImage');
                 Route::get('products', 'CompanyAppController@getProduct');
+                Route::get('get/redeem/code', 'CompanyAppController@getRedeem');
+                Route::post('scan/redeem/code', 'CompanyAppController@scanRedeem');
+
             }
         );
         Route::post('upload/image', 'CompanyAppController@upload');

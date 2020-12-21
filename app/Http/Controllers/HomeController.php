@@ -17,14 +17,17 @@ use App\Notification;
 use App\Product;
 use App\Productcompany;
 use App\Producttag;
+use App\RedeemCode;
 use App\Setting;
 use App\Subcategory;
+use App\Test;
 use App\Type;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -217,6 +220,14 @@ class HomeController extends Controller
         $report = Help::where('h_user', auth()->user()->id)->orderBy('created_at')->limit(30)->get();
         return response()->json([
             'report' => $report
+        ], 200);
+    }
+    public function getRedeem(Request $request)
+    {
+        
+        $redeem = RedeemCode::with('company.company')->where('rc_user', auth()->user()->id)->orderBy('rc_state')->limit(30)->get();
+        return response()->json([
+            'redeem' => $redeem
         ], 200);
     }
     public function addToCart(Request $request)
@@ -442,8 +453,8 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($cart->sum('c_price_all') / $bizz, 8),
-                "callback_url" => route('web_hook'),
-                "web_hook_url" => route('index'),
+                "callback_url" => route('index'),
+                "web_hook_url" => route('web_hook'),
                 "remarks" => $cart[0]->c_doc_id,
                 "user_id" =>  $request->user()->id
             ]
@@ -490,8 +501,8 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($request->amount / $bizz, 8),
-                "callback_url" => route('web_hook'),
-                "web_hook_url" => route('web_hook'),
+                "callback_url" => route('index'),
+                "web_hook_url" => route('web_hook.redeem'),
                 "remarks" =>    $request->company,
                 "user_id" =>  $request->user()->id
             ]
@@ -544,6 +555,9 @@ class HomeController extends Controller
     public function web_hook(Request $request)
     {
         $user = User::findOrFail($request->header('user-id'));
+        $test = new Test();
+        $test->data =  json_encode($request->header());
+        $test->save();
         if ($request->input('status') == 'succeed') {
             $cart = Cart::with(['product'])->where('c_doc_id', $request->header('order-id'))->where('c_state', 0)->get();
             if (!$cart->isEmpty()) {
@@ -578,10 +592,47 @@ class HomeController extends Controller
                         $value->save();
                     }
                 }
+
+                $notification = new Notification;
+                $notification->noti_content = 'content';
+                $notification->noti_id_opened = $request->header('order-id');
+                $notification->noti_user = $user->id;
+                $notification->noti_title = 'Your order has been Finished.';
+                $notification->noti_type = 4;
                 sendFirebaseMessage($user->u_firebase, 'Order Finished', 'Your Order Number #' .  $request->header('order-id') . ' Finished', ['history',  $request->header('order-id')]);
             } else {
+                $notification = new Notification;
+                $notification->noti_content = 'content';
+                $notification->noti_id_opened = $request->header('order-id');
+                $notification->noti_user = $user->id;
+                $notification->noti_title = 'Failed Transaction';
+                $notification->noti_type = 3;
                 sendFirebaseMessage($user->u_firebase, 'Order Failed', 'Your Order Number #' .  $request->header('order-id') . ' Failed', ['history',  $request->header('order-id')]);
             }
+        }
+    }
+    public function web_hook_redeem(Request $request)
+    {
+        $user = User::findOrFail($request->header('user-id'));
+        $test = new Test();
+        $test->data =  json_encode($request->header());
+        $test->save();
+        if ($request->input('status') == 'succeed') {
+            $data = uniqid().uniqid();
+            $qrCode = new \Endroid\QrCode\QrCode($data);
+            $qrCode->setWriterByName('png');
+            $qrCode->setEncoding('UTF-8');
+            $dataUri = $qrCode->writeDataUri();
+            $redeem =new RedeemCode;
+            $redeem->rc_qrcode = saveImageBase64($dataUri);
+            $redeem->rc_code =$data;
+            $redeem->rc_currency =$request->input('currency');
+            $redeem->rc_txid =$request->input('txid');
+            $redeem->rc_price =  $request->input('amount');
+            $redeem->rc_user = $request->header('user-id');
+            $redeem->rc_company = $request->header('order-id');
+            $redeem->rc_state = 0;
+            $redeem->save();
         }
     }
 }

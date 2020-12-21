@@ -17,6 +17,8 @@ class CreateRedeemCodesTable extends Migration
             $table->id();
             $table->string('rc_qrcode');
             $table->string('rc_code');
+            $table->string('rc_currency');
+            $table->string('rc_txid');
             $table->double('rc_price');
             $table->unsignedBigInteger('rc_user');
             $table->unsignedBigInteger('rc_company');
