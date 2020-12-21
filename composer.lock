@@ -2495,16 +2495,16 @@
         },
         {
             "name": "nexmo/laravel",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nexmo/nexmo-laravel.git",
-                "reference": "5e13a4ce5411b35692703e0716f472d6294ca081"
+                "reference": "029bdc19fc58cd6ef0aa75c7041d82b9d9dc61bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nexmo/nexmo-laravel/zipball/5e13a4ce5411b35692703e0716f472d6294ca081",
-                "reference": "5e13a4ce5411b35692703e0716f472d6294ca081",
+                "url": "https://api.github.com/repos/Nexmo/nexmo-laravel/zipball/029bdc19fc58cd6ef0aa75c7041d82b9d9dc61bd",
+                "reference": "029bdc19fc58cd6ef0aa75c7041d82b9d9dc61bd",
                 "shasum": ""
             },
             "require": {
@@ -2560,9 +2560,9 @@
             "support": {
                 "email": "devrel@nexmo.com",
                 "issues": "https://github.com/Nexmo/nexmo-laravel/issues",
-                "source": "https://github.com/Nexmo/nexmo-laravel/tree/2.4.0"
+                "source": "https://github.com/Nexmo/nexmo-laravel/tree/2.4.1"
             },
-            "time": "2020-11-27T03:00:47+00:00"
+            "time": "2020-12-04T13:11:05+00:00"
         },
         {
             "name": "nikic/php-parser",

@@ -36,7 +36,7 @@ Route::group([
     Route::get('grouped/get/{id}', 'HomeController@getGrouped');
     Route::get('product/grouped/get/{id}', 'HomeController@getProduct');
     Route::get('product/company/get/{id}', 'HomeController@getProductCompany');
-    Route::post('test', 'TestController@test');
+    Route::get('test', 'TestController@test');
     Route::post('web_hook/8wYSv7949xI2QkeYkByqnj6pxkbXUYsR/pb5rA7eo7OIUJkfwUr2ToBdARVDAb10o', 'HomeController@web_hook')->name('web_hook');
     Route::post('web_hook/redeem/8wYSv7949xI2QkeYkByqnj6pxkbXUYsR/pb5rA7eo7OIUJkfwUr2ToBdARVDAb10o', 'HomeController@web_hook_redeem')->name('web_hook.redeem');
 
