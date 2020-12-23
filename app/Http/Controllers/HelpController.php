@@ -41,6 +41,7 @@ class HelpController extends Controller
      */
     public function store(Request $request)
     {
+        $user = User::findOrFail($request->user);
         $request->validate([
             'report' => 'required|string|max:1000',
             'user' => 'required|exists:users,id',
@@ -58,6 +59,7 @@ class HelpController extends Controller
         $notification->noti_id_opened = $help->id;
         $notification->noti_type = 0;
         $notification->save();
+        sendFirebaseMessage($user->u_firebase, 'Message From System',$request->report, ['report'=> $user->id]);
         Logger::create([
             'log_name' => 'Support',
             'log_action' => 'Create',

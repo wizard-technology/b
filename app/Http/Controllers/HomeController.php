@@ -599,7 +599,7 @@ class HomeController extends Controller
                 $notification->noti_user = $user->id;
                 $notification->noti_title = 'Your order has been Finished.';
                 $notification->noti_type = 4;
-                sendFirebaseMessage($user->u_firebase, 'Order Finished', 'Your Order Number #' .  $request->header('order-id') . ' Finished', ['history',  $request->header('order-id')]);
+                sendFirebaseMessage($user->u_firebase, 'Order Finished', 'Your Order Number #' .  $request->header('order-id') . ' Finished', ['history'=>  $request->header('order-id')]);
             } else {
                 $notification = new Notification;
                 $notification->noti_content = 'content';
@@ -607,7 +607,7 @@ class HomeController extends Controller
                 $notification->noti_user = $user->id;
                 $notification->noti_title = 'Failed Transaction';
                 $notification->noti_type = 3;
-                sendFirebaseMessage($user->u_firebase, 'Order Failed', 'Your Order Number #' .  $request->header('order-id') . ' Failed', ['history',  $request->header('order-id')]);
+                sendFirebaseMessage($user->u_firebase, 'Order Failed', 'Your Order Number #' .  $request->header('order-id') . ' Failed', ['history'=>  $request->header('order-id')]);
             }
         }
     }

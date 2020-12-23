@@ -55,24 +55,22 @@ function getIpAddress()
     return $ip_address;
 }
 
-function sendFirebaseMessage($token, $title, $body,$screen = 'defualt')
+function sendFirebaseMessage($token, $title, $body,$screen)
 {
-    $url = "https://fcm.googleapis.com/fcm/send";
-    // $token = "ca9zi9scRxe1E9pZ3VPEed:APA91bH-SY6CNfTVkw3TnyPiuZ3OTopCBsPZGzt7t193SrumtmmvR0juks9Bs6Zlc_sO-r4BdfbsNiirjF71eE86vfzzOCIRObEjYtHNA1Enklhjs_vSrlywe716b4a0qRejcJnNNEEJ"; 
+    $url = "https://fcm.googleapis.com/fcm/send"; 
     $serverKey = 'AAAAP4vZgY8:APA91bGzYrXbq8bRt535zFjtnwkyiYqV_1UG0lYwZ5GowdrgJbVe7QZP1GWuNkE0AaVAU7YQpQ0aHGjAZy3o194hoS7xhHokhpwT03OW7iEpeNbdGVJP0IkuZnzkd3miMKCQElWjNiCE';
-    //$title = "Notification title"; 
-    //$body = "Hello I am from Your php server"; 
+
     $notification = array(
         'title' => $title,
         'body' => $body,
         'sound' => 'default',
-        'icon' => asset('icon.png'),
+        // 'icon' => asset('icon.png'),
         'badge' => '1',
     );
     $arrayToSend = array(
         'to' => $token,
         'notification' => $notification,
-        'data' => ['screen'=>$screen],
+        'data' => $screen,
         'priority' => 'high',
     );
     $json = json_encode($arrayToSend);
