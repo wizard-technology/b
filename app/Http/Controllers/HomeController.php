@@ -442,11 +442,11 @@ class HomeController extends Controller
         $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
 
         $nonce = time();
-        $access_key = env("BIZZCOIN_KEY");
-        $secret_key =  env("BIZZCOIN_SECRET");
+        $access_key = "d671bbb1c3b41eec";
+        $secret_key =  "bb32e10326e8d5a345b5b59b6aeabe37";
         $sig = hash_hmac('SHA256', $nonce . $access_key, $secret_key);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, env("BIZZCOIN_LINK"));
+        curl_setopt($ch, CURLOPT_URL, "https://bizz.exchange/api/v2/peatio/account/latest/deposit_address");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
@@ -490,11 +490,11 @@ class HomeController extends Controller
         $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
 
         $nonce = time();
-        $access_key = env("BIZZCOIN_KEY");
-        $secret_key =  env("BIZZCOIN_SECRET");
+        $access_key = "d671bbb1c3b41eec";
+        $secret_key =  "bb32e10326e8d5a345b5b59b6aeabe37";
         $sig = hash_hmac('SHA256', $nonce . $access_key, $secret_key);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, env("BIZZCOIN_LINK"));
+        curl_setopt($ch, CURLOPT_URL, "https://bizz.exchange/api/v2/peatio/account/latest/deposit_address");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(

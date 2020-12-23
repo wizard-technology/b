@@ -55,7 +55,7 @@ function getIpAddress()
     return $ip_address;
 }
 
-function sendFirebaseMessage($token, $title, $body,$screen)
+function sendFirebaseMessage($token, $title, $body,$screen = null)
 {
     $url = "https://fcm.googleapis.com/fcm/send"; 
     $serverKey = 'AAAAP4vZgY8:APA91bGzYrXbq8bRt535zFjtnwkyiYqV_1UG0lYwZ5GowdrgJbVe7QZP1GWuNkE0AaVAU7YQpQ0aHGjAZy3o194hoS7xhHokhpwT03OW7iEpeNbdGVJP0IkuZnzkd3miMKCQElWjNiCE';
