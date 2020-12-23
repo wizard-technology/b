@@ -39,12 +39,6 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#create" role="tab">Create Product</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#chart" role="tab">Charts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#analays" role="tab">Analays</a>
-                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -576,16 +570,6 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
-                    <div class="tab-pane p-3" id="chart" role="tabpanel">
-                        <p class="font-14 mb-0">
-                            Coming Soon ..
-                        </p>
-                    </div>
-                    <div class="tab-pane p-3" id="analays" role="tabpanel">
-                        <p class="font-14 mb-0">
-                            Coming Soon ..
-                        </p>
                     </div>
                 </div>
 

@@ -45,6 +45,9 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#privacy" role="tab">Privacy Policy</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#website" role="tab">Website</a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -245,28 +248,65 @@
                             @csrf
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <label for="">Terms And Condition</label>
+                                    <label for="">Privacy Policy</label>
                                     <textarea  class="form-control summernote" name="article_english"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
-                                    <label for="">Termsert û merc</label>
+                                    <label for="">Siyaseta taybetîtiyê</label>
                                     <textarea  class="form-control summernote" name="article_kurmanji" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_kr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <label for="">مەرجەکانی بەکارهێنان</label>
+                                    <label for="">سیاسەتی تایبەتێتی</label>
                                     <textarea  class="form-control summernote" dir="rtl" name="article_kurdish" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ku)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
-                                    <label for="">أحكام وشروط</label>
+                                    <label for="">سياسة الخصوصية</label>
                                     <textarea  class="form-control summernote" dir="rtl" name="article_arabic" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ar)  !!}</textarea>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <label for="">شرایط و ضوابط</label>
+                                    <label for="">سیاست حفظ حریم خصوصی</label>
+                                    <textarea  class="form-control summernote" name="article_persian"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article_pr)  !!}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group text-right row m-t-20">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane p-3" id="privacy" role="tabpanel">
+                        <form action="{{route('dashboard.setting.more',2)}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <label for="">Privacy Policy</label>
+                                    <textarea  class="form-control summernote" name="article_english"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article)  !!}</textarea>
+                                </div>
+                                <div class="col-6">
+                                    <label for="">Siyaseta taybetîtiyê</label>
+                                    <textarea  class="form-control summernote" name="article_kurmanji" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_kr)  !!}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <label for="">سیاسەتی تایبەتێتی</label>
+                                    <textarea  class="form-control summernote" dir="rtl" name="article_kurdish" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ku)  !!}</textarea>
+                                </div>
+                                <div class="col-6">
+                                    <label for="">سياسة الخصوصية</label>
+                                    <textarea  class="form-control summernote" dir="rtl" name="article_arabic" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ar)  !!}</textarea>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <label for="">سیاست حفظ حریم خصوصی</label>
                                     <textarea  class="form-control summernote" name="article_persian"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article_pr)  !!}</textarea>
                                 </div>
                             </div>

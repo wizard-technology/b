@@ -16,8 +16,8 @@ class CreateImageproductcompaniesTable extends Migration
         Schema::create('imageproductcompanies', function (Blueprint $table) {
             $table->id();
             $table->string('ipc_image');
-            $table->unsignedBigInteger('ipc_produc');
-            $table->foreign('ipc_produc')->references('id')->on('productcompanies');
+            $table->unsignedBigInteger('ipc_product');
+            $table->foreign('ipc_product')->references('id')->on('productcompanies');
             $table->timestamps();
         });
     }

@@ -8,6 +8,6 @@ class Productcompany extends Model
 {
     public function images()
     {
-        return $this->hasMany(Imageproductcompany::class, 'ipc_produc');
+        return $this->hasMany(Imageproductcompany::class, 'ipc_product');
     }
 }

@@ -24,9 +24,9 @@ class CreateProductsTable extends Migration
             $table->double('p_price');
             $table->text('p_info');
             $table->text('p_info_ku');
-            $table->string('p_info_ar');
-            $table->string('p_info_pr');
-            $table->string('p_info_kr');
+            $table->text('p_info_ar');
+            $table->text('p_info_pr');
+            $table->text('p_info_kr');
             $table->integer('p_order_by');
             $table->boolean('p_state')->default(0);
             $table->boolean('p_has_info')->default(0);

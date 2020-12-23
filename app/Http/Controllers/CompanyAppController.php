@@ -169,7 +169,7 @@ class CompanyAppController extends Controller
             'id' => 'required|exists:productcompanies,id',
         ]);
         $product = Productcompany::find($request->id);
-        $image = Imageproductcompany::where('ipc_produc',$product->id)->delete();
+        $image = Imageproductcompany::where('ipc_product',$product->id)->delete();
         $product->delete();
         return response()->json([
             'message' => 'Successfully Deleted Product!',
@@ -189,7 +189,7 @@ class CompanyAppController extends Controller
         }
         $product =new Imageproductcompany;
         $product->ipc_image = $request->image->store('uploads', 'public');
-        $product->ipc_produc = $request->id;
+        $product->ipc_product = $request->id;
         $product->save();
         return response()->json([
             'message' => 'Successfully Added Image!',
@@ -197,7 +197,7 @@ class CompanyAppController extends Controller
     }
     public function getProduct(Request $request)
     {
-        $product = Productcompany::with('images')->where('pc_company', $request->user()->id)->get();
+        $product = Productcompany::with(['images'])->where('pc_company', $request->user()->id)->get();
         return response()->json([
             'product'=>$product
         ], 200);
@@ -205,6 +205,13 @@ class CompanyAppController extends Controller
     public function getRedeem(Request $request)
     {
         $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',1)->orderBy('rc_state')->limit(30)->get();
+        return response()->json([
+            'redeem'=>$redeem
+        ], 200);
+    }
+    public function getRedeemSearch(Request $request)
+    {
+        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',1)->whereDate('updated_at',$request->date)->orderBy('rc_state')->limit(30)->get();
         return response()->json([
             'redeem'=>$redeem
         ], 200);

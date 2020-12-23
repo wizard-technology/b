@@ -111,6 +111,7 @@ class CompanyController extends Controller
         if ($user->u_state == 0 || $user->u_state == 2) {
             $user->u_state = 1;
             $user->u_phone_verified_at = date("Y-m-d H:i:s");
+            sendFirebaseMessage($user->u_firebase, 'Your Account Actived', 'Your Company Accepted You can Login to #'.$user->u_second_name);
         } else {
             $user->u_state = 2;
         }

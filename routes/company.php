@@ -38,6 +38,7 @@ Route::group(
                 Route::post('product/company/image', 'CompanyAppController@addImage');
                 Route::get('products', 'CompanyAppController@getProduct');
                 Route::get('get/redeem/code', 'CompanyAppController@getRedeem');
+                Route::post('search/redeem/code', 'CompanyAppController@getRedeemSearch');
                 Route::post('scan/redeem/code', 'CompanyAppController@scanRedeem');
 
             }

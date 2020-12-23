@@ -55,11 +55,11 @@ function getIpAddress()
     return $ip_address;
 }
 
-function sendFirebaseMessage($token, $title, $body,$screen)
+function sendFirebaseMessage($token, $title, $body,$screen = 'defualt')
 {
     $url = "https://fcm.googleapis.com/fcm/send";
     // $token = "ca9zi9scRxe1E9pZ3VPEed:APA91bH-SY6CNfTVkw3TnyPiuZ3OTopCBsPZGzt7t193SrumtmmvR0juks9Bs6Zlc_sO-r4BdfbsNiirjF71eE86vfzzOCIRObEjYtHNA1Enklhjs_vSrlywe716b4a0qRejcJnNNEEJ"; 
-    $serverKey = 'AAAAMwt8Pjs:APA91bFLX3FKrfFz92f4fEE0WllFXM2iI49pXd6q6fjMv3xd-DXvXtq43eP7_82tCSuFewaO2mpdGpA9BZm8sA8SFwkcvLfryMrb4ISowH_k04FBnSn_wXKE7KLd-t1Fpa8Fa9Kq7oMh';
+    $serverKey = 'AAAAP4vZgY8:APA91bGzYrXbq8bRt535zFjtnwkyiYqV_1UG0lYwZ5GowdrgJbVe7QZP1GWuNkE0AaVAU7YQpQ0aHGjAZy3o194hoS7xhHokhpwT03OW7iEpeNbdGVJP0IkuZnzkd3miMKCQElWjNiCE';
     //$title = "Notification title"; 
     //$body = "Hello I am from Your php server"; 
     $notification = array(
