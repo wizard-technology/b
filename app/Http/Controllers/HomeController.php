@@ -469,13 +469,11 @@ class HomeController extends Controller
         ]);
         $result = curl_exec($ch);
         curl_close($ch);
-        // return json_decode($result);
         $data = "BIZZ:" . json_decode($result)->address . "?amount=" . round($cart->sum('c_price_all') / $bizz, 8);
         $qrCode = new \Endroid\QrCode\QrCode($data);
         $qrCode->setWriterByName('png');
         $qrCode->setEncoding('UTF-8');
         $dataUri = $qrCode->writeDataUri();
-
         return response()->json([
             'result' => $result,
             'qr' => saveImageBase64($dataUri)
@@ -507,7 +505,6 @@ class HomeController extends Controller
                 "user_id" =>  $request->user()->id
             ]
         ));
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'cache-control: no-cache',
             'content-type: multipart/form-data',
