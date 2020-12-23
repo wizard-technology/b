@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bizz</title>
+    <title>{{config('app.name') }}  </title>
     <meta name="description" content="Everything you are looking for ">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{{asset('web/style.css')}}" />
 </head>
 
 <body>
@@ -15,13 +15,13 @@
 
         <!-- nav bar  -->
         <div class="nav">
-            <a style="text-decoration: none;" href="./index.html">
+            <a style="text-decoration: none;" href="/">
                 <p id="logo">Bizz</p>
             </a>
 
             <div class="flex">
 
-                <a href="terms.html" id="link">Terms & Conditions</a>
+                <a href="{{route('terms')}}" id="link">Terms & Conditions</a>
 
                 <div class="flex-ver">
 
@@ -63,22 +63,22 @@
                 <a id="Dawnload" href="#">Dawnload</a>
             </div>
 
-            <img class="glow-icon" style="position: absolute; top: 25%; left: 50%;" src="src/check.png">
-            <img class="glow-icon" style="position: absolute; top: 20%; left: 20%;" src="src/message-square.png">
-            <img class="glow-icon" style="position: absolute; top: 60%; left: 53%;" src="src/key.png">
-            <img class="glow-icon" style="position: absolute; top: 70%; left: 25%;" src="src/heart.png">
+            <img class="glow-icon" style="position: absolute; top: 25%; left: 50%;" src="{{asset('web/src/check.png')}}">
+            <img class="glow-icon" style="position: absolute; top: 20%; left: 20%;" src="{{asset('web/src/message-square.png')}}">
+            <img class="glow-icon" style="position: absolute; top: 60%; left: 53%;" src="{{asset('web/src/key.png')}}">
+            <img class="glow-icon" style="position: absolute; top: 70%; left: 25%;" src="{{asset('web/src/heart.png')}}">
 
 
 
 
             <div>
-                <img src="src/loginscreen.png" alt="" width="95%" height="95%">
+                <img src="{{asset('web/src/loginscreen.png')}}" alt="" width="95%" height="95%">
             </div>
         </div>
 
         <div class="flex">
             <div>
-                <img src="src/homescreen.png" alt="" width="95%" height="95%">
+                <img src="{{asset('web/src/homescreen.png')}}" alt="" width="95%" height="95%">
             </div>
             <div>
                 <p id="brand">Everything<br>Your Are Looking For</p>

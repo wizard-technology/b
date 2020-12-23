@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'DashboardController@home')->name('home');
+Route::get('/terms-and-conditions', 'DashboardController@terms')->name('terms');
 
-Route::get('/', function () {
-    return view('pages.index');
-})->name('index');
 Route::get('/dashboard/login', 'AdminLogin@login')->name('dashboard.login');
 Route::post('/dashboard/signup', 'AdminLogin@signup')->name('dashboard.signup');
 Route::post('/dashboard/login', 'AdminLogin@check')->name('dashboard.check');

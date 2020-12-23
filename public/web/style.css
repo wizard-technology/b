@@ -1,0 +1,167 @@
+body {
+  padding: 0px;
+}
+
+.container {
+  margin-left: 10%;
+  margin-right: 10%;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+p {
+  margin: 0px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 2%;
+  flex-wrap: wrap;
+}
+
+#logo {
+  color: #f9bf2d;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+}
+
+#lang {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+}
+
+#lang:hover{
+  color: #f9bf2d;
+}
+
+.lang-bg {
+  box-shadow: rgba(255, 210, 104, 0.33) 0px 8px 15px;
+  position: absolute;
+  margin-top: 2%;
+  padding: 10px;
+  display: none;
+}
+
+
+#link {
+  color: #f9bf2d;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-ver {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+#brand {
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-size: 80px;
+}
+
+#moto {
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 30px;
+}
+
+#Dawnload {
+  text-decoration: none;
+  border-radius: 8px;
+  background-color: #f9bf2d;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: white;
+  padding: 10px 50px 10px 50px;
+  box-shadow: rgba(255, 210, 104, 30) 0px 8px 30px;
+  margin-top: 5%;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.title {
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-size: 35px;
+  text-align: center;
+}
+
+#social {
+  margin-top: 2%;
+}
+
+#social a {
+  padding: 0px;
+  text-decoration: none;
+  color: black;
+}
+
+#social a svg {
+  margin: 10px;
+}
+
+.btn {
+  background-color: black;
+  width: 200px;
+  height: 55px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
+}
+
+.storesBtn {
+  text-decoration: none;
+  font-weight: 400;
+  color: white;
+  font-size: 20px;
+}
+
+/* responsive */
+@media only screen and (max-width: 600px) {
+  .flex {
+    flex-wrap: wrap;
+  }
+
+  .flex-center div {
+    margin-top: 5%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .glow-icon {
+    display: none;
+  }
+}

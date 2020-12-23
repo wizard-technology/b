@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bizz</title>
+    <title>{{config('app.name') }} </title>
     <meta name="description" content="Everything you are looking for ">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{{asset('web/style.css')}}" />
 </head>
 
 <body>
@@ -15,7 +15,7 @@
 
         <!-- nav bar  -->
         <div class="nav">
-            <a style="text-decoration: none;" href="./index.html">
+            <a style="text-decoration: none;" href="/">
                 <p id="logo">Bizz</p>
             </a>
 
@@ -53,7 +53,7 @@
 
         <h3 id="link">Terms & Conditions</h3>
         <div>
-          {{$data->term}}
+            {!! json_decode($data->ar_article) !!}
         </div>
     </div>
 

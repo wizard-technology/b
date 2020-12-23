@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Cart;
 use App\Logger;
 use App\Product;
@@ -14,6 +15,16 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class DashboardController extends Controller
 {
+    public function home()
+    {
+        return view('pages.index');
+    }
+    public function terms()
+    {
+        $data = Article::findOrfail(1);
+        return view('pages.terms',['data'=>$data]);
+
+    }
     public function index()
     {
         $month = [
@@ -46,11 +57,11 @@ class DashboardController extends Controller
             $month[$value->months] = $value->amount;
         }
         $trending = Cart::with(['product'])
-        ->where('c_state', 1)
+            ->where('c_state', 1)
             ->whereDate('created_at', date('Y-m-d'))
             ->groupBy('c_product')
             ->select('c_product', DB::raw('count(*) as total'))
-            ->orderBy('total','desc')
+            ->orderBy('total', 'desc')
             ->get();
         return view(
             'pages.dashboard.index',
@@ -61,7 +72,7 @@ class DashboardController extends Controller
                 'company' => count($company),
                 'order' => count($order),
                 'profit' => $order,
-                'trending' =>$trending ,
+                'trending' => $trending,
                 'top_company' => $top_company,
                 'chart' => json_encode($month, true),
             ]
@@ -101,11 +112,11 @@ class DashboardController extends Controller
             $month[$value->months] = $value->amount;
         }
         $trending = Cart::with(['product'])
-        ->where('c_state', 1)
-            ->whereDate('created_at',$request->date)
+            ->where('c_state', 1)
+            ->whereDate('created_at', $request->date)
             ->groupBy('c_product')
             ->select('c_product', DB::raw('count(*) as total'))
-            ->orderBy('total','desc')
+            ->orderBy('total', 'desc')
 
             ->get();
         return view(
@@ -117,7 +128,7 @@ class DashboardController extends Controller
                 'company' => count($company),
                 'order' => count($order),
                 'profit' => $order,
-                'trending' =>$trending ,
+                'trending' => $trending,
                 'top_company' => $top_company,
                 'chart' => json_encode($month, true),
                 'date' => $request->date
