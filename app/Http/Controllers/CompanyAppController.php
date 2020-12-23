@@ -30,6 +30,7 @@ class CompanyAppController extends Controller
             'address' => 'required|string|max:1250',
             'city' => 'required|exists:cities,id',
             'information' => 'max:1250',
+
         ]);
         try {
             $company = new Company;
@@ -41,6 +42,7 @@ class CompanyAppController extends Controller
             $user->u_role = "COMPANY";
             $user->u_city = $request->city;
             $user->password = bcrypt($request->password);
+            $user->u_firebase =$request->notification ?? null;
             $user->save();
 
             $company->co_name = $request->company_name;

@@ -129,11 +129,11 @@
 
         <div class="flex-center">
             <div class="btn">
-                <img width="25" height="25" src="src/playstore.png">
+                <img width="25" height="25" src="{{asset('/web/src/playstore.png')}}">
                 <a class="storesBtn" href="#">Playstore</a>
             </div>
             <div class="btn">
-                <img width="25" height="25" src="src/apple.png">
+                <img width="25" height="25" src="{{asset('/web/src/apple.png')}}">
                 <a class="storesBtn" href="#">Appstore</a>
             </div>
         </div>

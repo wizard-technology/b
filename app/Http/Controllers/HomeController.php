@@ -453,7 +453,7 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($cart->sum('c_price_all') / $bizz, 8),
-                "callback_url" => route('index'),
+                "callback_url" => route('home'),
                 "web_hook_url" => route('web_hook'),
                 "remarks" => $cart[0]->c_doc_id,
                 "user_id" =>  $request->user()->id
@@ -501,7 +501,7 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($request->amount / $bizz, 8),
-                "callback_url" => route('index'),
+                "callback_url" => route('home'),
                 "web_hook_url" => route('web_hook.redeem'),
                 "remarks" =>    $request->company,
                 "user_id" =>  $request->user()->id

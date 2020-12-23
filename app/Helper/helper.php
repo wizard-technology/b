@@ -66,6 +66,7 @@ function sendFirebaseMessage($token, $title, $body,$screen = 'defualt')
         'title' => $title,
         'body' => $body,
         'sound' => 'default',
+        'icon' => asset('icon.png'),
         'badge' => '1',
     );
     $arrayToSend = array(
