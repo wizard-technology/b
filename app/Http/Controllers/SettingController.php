@@ -36,6 +36,24 @@ class SettingController extends Controller
                 'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
                 'ar_admin' => session('dashboard'),
                 'ar_type' => 'privacy',
+            ],[
+                'id' => 3,
+                'ar_article' => json_encode('Write Some Things Here'),
+                'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
+                'ar_article_ar' => json_encode('اكتب بعض الأشياء هنا'),
+                'ar_article_pr' => json_encode('برخی موارد را در اینجا بنویسید'),
+                'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
+                'ar_admin' => session('dashboard'),
+                'ar_type' => 'title_home',
+            ],[
+                'id' => 4,
+                'ar_article' => json_encode('Write Some Things Here'),
+                'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
+                'ar_article_ar' => json_encode('اكتب بعض الأشياء هنا'),
+                'ar_article_pr' => json_encode('برخی موارد را در اینجا بنویسید'),
+                'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
+                'ar_admin' => session('dashboard'),
+                'ar_type' => 'disc_home',
             ]]);
         }
         $article = Article::get();
@@ -100,12 +118,16 @@ class SettingController extends Controller
             'bizzcoin' => 'required|numeric',
             'message' => 'required|min:5|max:255',
             'forget' => 'required|min:5|max:255',
+            'ios' => 'required|min:5|max:255',
+            'android' => 'required|min:5|max:255',
             'state' => 'sometimes|in:on,null',
         ]);
         $setting = Setting::findOrFail($id);
         $setting->bizzcoin = $request->bizzcoin;
         $setting->message = $request->message;
         $setting->forget = $request->forget;
+        $setting->ios = $request->ios;
+        $setting->android = $request->android;
         $setting->state_app = $request->state == 'on' ? 1 : 0;
         $setting->save();
         Logger::create([

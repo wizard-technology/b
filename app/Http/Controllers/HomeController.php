@@ -42,6 +42,23 @@ class HomeController extends Controller
             'type' => $type,
         ], 200);
     }
+    public function isNotificationAndCheckout(Request $request)
+    {
+        $cart = Cart::where('c_user', $request->user()->id)->where('c_state', 0)->get()->count();
+        $notification = Notification::where('noti_user', $request->user()->id)->where('noti_state', 0)->get()->count();
+        return response()->json([
+            'cart' =>  $cart > 0,
+            'notification' => $notification > 0,
+        ], 200);
+    }
+    public function openNotification(Request $request)
+    {
+        $notification = Notification::where('noti_user', $request->user()->id);
+        $notification->update(['noti_state' => 1]);
+        return response()->json([
+            'notification' => $notification->orderBy('created_at', 'DESC')->get(),
+        ], 200);
+    }
     public function getSubcategory($id)
     {
         $subcategory = Subcategory::where('st_state', 1)->where('st_type', $id)->orderBy('id', 'DESC')->get();
@@ -453,7 +470,7 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($cart->sum('c_price_all') / $bizz, 8),
-                "callback_url" => route('home'),
+                "callback_url" => route('web_hook'),
                 "web_hook_url" => route('web_hook'),
                 "remarks" => $cart[0]->c_doc_id,
                 "user_id" =>  $request->user()->id
@@ -482,7 +499,7 @@ class HomeController extends Controller
     public function payment_redeem(Request $request)
     {
         $request->validate([
-            'company' => 'required|exists:companies,co_user',
+            'company' => 'required|exists:users,id',
             'amount' => 'required|numeric|gt:0',
         ]);
         $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
@@ -499,7 +516,7 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($request->amount / $bizz, 8),
-                "callback_url" => route('home'),
+                "callback_url" =>route('web_hook.redeem'),
                 "web_hook_url" => route('web_hook.redeem'),
                 "remarks" =>    $request->company,
                 "user_id" =>  $request->user()->id
@@ -530,23 +547,7 @@ class HomeController extends Controller
             'qr' => saveImageBase64($dataUri)
         ], 200);
     }
-    public function isNotificationAndCheckout(Request $request)
-    {
-        $cart = Cart::where('c_user', $request->user()->id)->where('c_state', 0)->get()->count();
-        $notification = Notification::where('noti_user', $request->user()->id)->where('noti_state', 0)->get()->count();
-        return response()->json([
-            'cart' =>  $cart > 0,
-            'notification' => $notification > 0,
-        ], 200);
-    }
-    public function openNotification(Request $request)
-    {
-        $notification = Notification::where('noti_user', $request->user()->id);
-        $notification->update(['noti_state' => 1]);
-        return response()->json([
-            'notification' => $notification->orderBy('created_at', 'DESC')->get(),
-        ], 200);
-    }
+   
 
 
     public function web_hook(Request $request)

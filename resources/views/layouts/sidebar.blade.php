@@ -116,8 +116,12 @@
                             data-feather="activity"></i><span>
                             Bizzcoin Price</span></a>
                 </li>
-                
-
+                <li>
+                    <a href="{{route('dashboard.social.index')}}"
+                        class="waves-effect {{getCurrentRoute(Route::currentRouteName() )== 'social' ? 'active' : ''}}"><i
+                            data-feather="paperclip"></i><span>
+                            Social Media</span></a>
+                </li>
             </ul>
         </div>
         <div class="clearfix"></div>

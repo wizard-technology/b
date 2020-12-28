@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Admin;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminLogin extends Controller
@@ -123,9 +124,47 @@ class AdminLogin extends Controller
             'bizzcoin',
             'subcategory',
             'grouped',
+            'social',
         ]);
         $admin->save();
         session()->put('dashboard', $user->id);
+        DB::table('articles')->insert([[
+            'id' => 1,
+            'ar_article' => json_encode('Write Some Things Here'),
+            'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
+            'ar_article_ar' => json_encode('اكتب بعض الأشياء هنا'),
+            'ar_article_pr' => json_encode('برخی موارد را در اینجا بنویسید'),
+            'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
+            'ar_admin' => session('dashboard'),
+            'ar_type' => 'term',
+        ], [
+            'id' => 2,
+            'ar_article' => json_encode('Write Some Things Here'),
+            'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
+            'ar_article_ar' => json_encode('اكتب بعض الأشياء هنا'),
+            'ar_article_pr' => json_encode('برخی موارد را در اینجا بنویسید'),
+            'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
+            'ar_admin' => session('dashboard'),
+            'ar_type' => 'privacy',
+        ],[
+            'id' => 3,
+            'ar_article' => json_encode('Write Some Things Here'),
+            'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
+            'ar_article_ar' => json_encode('اكتب بعض الأشياء هنا'),
+            'ar_article_pr' => json_encode('برخی موارد را در اینجا بنویسید'),
+            'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
+            'ar_admin' => session('dashboard'),
+            'ar_type' => 'title_home',
+        ],[
+            'id' => 4,
+            'ar_article' => json_encode('Write Some Things Here'),
+            'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
+            'ar_article_ar' => json_encode('اكتب بعض الأشياء هنا'),
+            'ar_article_pr' => json_encode('برخی موارد را در اینجا بنویسید'),
+            'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
+            'ar_admin' => session('dashboard'),
+            'ar_type' => 'disc_home',
+        ]]);
         return redirect()->route('dashboard.index');
     }
     function logout()

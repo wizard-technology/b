@@ -42,7 +42,7 @@ class CompanyAppController extends Controller
             $user->u_role = "COMPANY";
             $user->u_city = $request->city;
             $user->password = bcrypt($request->password);
-            $user->u_firebase =$request->notification ?? null;
+            $user->u_firebase = $request->notification ?? null;
             $user->save();
 
             $company->co_name = $request->company_name;
@@ -78,7 +78,6 @@ class CompanyAppController extends Controller
             'address' => 'required|string|max:1250',
             'city' => 'required|exists:cities,id',
             'information' => 'max:1250',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:8192',
         ]);
         try {
             $user = User::find($request->user()->id);
@@ -94,9 +93,6 @@ class CompanyAppController extends Controller
             $company->co_info = $request->information;
             $company->co_user =  $user->id;
             $company->co_admin = $user->id;
-            $company->co_image = isset($request->image)  ? $request->image->store('uploads', 'public') : null;
-
-            // $company->co_image = $request->image == null ?  $company->co_image : saveImageBase64Company($request->image);
             $company->save();
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
@@ -114,7 +110,7 @@ class CompanyAppController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:8192',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
 
             // 'image' => 'required|base64image:jpeg,png,jpg,gif|base64max:8192',
         ]);
@@ -137,7 +133,7 @@ class CompanyAppController extends Controller
             'disc' => 'required|string|max:1250',
             'price' => 'required|numeric|gte:0',
         ]);
-        $product =new Productcompany;
+        $product = new Productcompany;
         $product->pc_name = $request->name;
         $product->pc_disc = $request->disc;
         $product->pc_price = $request->price;
@@ -171,25 +167,25 @@ class CompanyAppController extends Controller
             'id' => 'required|exists:productcompanies,id',
         ]);
         $product = Productcompany::find($request->id);
-        $image = Imageproductcompany::where('ipc_product',$product->id)->delete();
+        $image = Imageproductcompany::where('ipc_product', $product->id)->delete();
         $product->delete();
         return response()->json([
             'message' => 'Successfully Deleted Product!',
         ], 200);
     }
-     public function addImage(Request $request)
+    public function addImage(Request $request)
     {
         $request->validate([
             'id' => 'required|exists:productcompanies,id',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:8192',
         ]);
         $pro = Productcompany::find($request->id);
-        if($pro->pc_company != $request->user()->id){
+        if ($pro->pc_company != $request->user()->id) {
             return response()->json([
                 'message' => 'Permission Denied!',
             ], 422);
         }
-        $product =new Imageproductcompany;
+        $product = new Imageproductcompany;
         $product->ipc_image = $request->image->store('uploads', 'public');
         $product->ipc_product = $request->id;
         $product->save();
@@ -201,40 +197,50 @@ class CompanyAppController extends Controller
     {
         $product = Productcompany::with(['images'])->where('pc_company', $request->user()->id)->get();
         return response()->json([
-            'product'=>$product
+            'product' => $product
         ], 200);
     }
     public function getRedeem(Request $request)
     {
-        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',1)->orderBy('rc_state')->limit(30)->get();
+        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state', 1)->orderBy('rc_state')->limit(30)->get();
         return response()->json([
-            'redeem'=>$redeem
+            'redeem' => $redeem
         ], 200);
     }
     public function getRedeemSearch(Request $request)
     {
-        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',1)->whereDate('updated_at',$request->date)->orderBy('rc_state')->limit(30)->get();
+        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state', 1)->whereDate('updated_at', $request->date)->orderBy('rc_state')->limit(30)->get();
         return response()->json([
-            'redeem'=>$redeem
+            'redeem' => $redeem
         ], 200);
     }
     public function scanRedeem(Request $request)
     {
-        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state',0)->where('rc_code',$request->code)->first();
-        if(empty($redeem)){
+        $redeem = RedeemCode::with('user')->where('rc_company', auth()->user()->id)->where('rc_state', 0)->where('rc_code', $request->code)->first();
+        if (empty($redeem)) {
             return response()->json([
-                'error'=>'Code Used or Wrong'
+                'error' => 'Code Used or Wrong'
             ], 400);
-        }else{
+        } else {
             $redeem->rc_state = 1;
             $redeem->save();
             return response()->json([
-                'redeem'=>$redeem
+                'redeem' => $redeem
             ], 200);
-
         }
-
-        
     }
-
+    public function search(Request $request)
+    {
+        $redeem = RedeemCode::with('user')->whereHas('user' , function ($sql) use ($request) {
+            $sql->where(function ($query)use ($request){
+                $query->where('u_first_name', 'like', '%' . $request->search . '%');
+                $query->orWhere('u_second_name', 'like', '%' . $request->search . '%');
+                $query->orWhere('u_email', 'like', '%' . $request->search . '%');
+                $query->orWhere('u_phone', 'like', '%' . $request->search . '%');
+            });
+        })->where('rc_company', auth()->user()->id)->where('rc_state', 1)->get();
+        return response()->json([
+            'redeem' => $redeem
+        ], 200);
+    }
 }

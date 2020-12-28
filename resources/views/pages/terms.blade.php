@@ -7,6 +7,18 @@
     <title>{{config('app.name') }} </title>
     <meta name="description" content="Everything you are looking for ">
     <link rel="stylesheet" href="{{asset('web/style.css')}}" />
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    {{-- <style>
+        .feather {
+            display: inline-block;
+            line-height: 17px;
+            margin-left: 3px;
+            margin-right: 5px;
+            text-align: center;
+            vertical-align: middle;
+            width: 18px;
+        }
+    </style> --}}
 </head>
 
 <body>
@@ -75,6 +87,9 @@
 
 
 
+<script>
+    feather.replace()
+</script>
 </body>
 
 </html>

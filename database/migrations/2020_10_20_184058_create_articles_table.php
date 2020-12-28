@@ -26,6 +26,7 @@ class CreateArticlesTable extends Migration
             $table->timestamps();
         });
         
+        
     }
 
     /**

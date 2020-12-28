@@ -7,6 +7,7 @@ use App\Cart;
 use App\Logger;
 use App\Product;
 use App\Setting;
+use App\SocialMedia;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,12 @@ class DashboardController extends Controller
 {
     public function home()
     {
-        return view('pages.index');
+        $title = Article::findOrfail(3);
+        $desc = Article::findOrfail(4);
+        $social = SocialMedia::where('sm_state',1)->get();
+        $setting = Setting::first();
+
+        return view('pages.index',['title'=>$title,'desc'=>$desc,'social'=>$social,'setting'=>$setting]);
     }
     public function terms()
     {

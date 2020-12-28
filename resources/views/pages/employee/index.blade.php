@@ -447,6 +447,19 @@
                                                                                         for="grouped">Grouped</label>
                                                                                 </div>
                                                                             </div>
+                                                                            <div class="checkbox my-2">
+                                                                                <div
+                                                                                    class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox"
+                                                                                        name="access[]"
+                                                                                        {{ in_array( 'social' ,json_decode($value->admin->a_access)) ? 'checked' : ''}}
+                                                                                        value="social"
+                                                                                        class="custom-control-input"
+                                                                                        id="social">
+                                                                                    <label class="custom-control-label"
+                                                                                        for="social">Social Media</label>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -680,6 +693,13 @@
                                             <input type="checkbox" name="access[]" checked value="grouped"
                                                 class="custom-control-input" id="grouped2">
                                             <label class="custom-control-label" for="grouped2">Grouped</label>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox my-2">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="access[]" checked value="social"
+                                                class="custom-control-input" id="social2">
+                                            <label class="custom-control-label" for="social2">Social Media</label>
                                         </div>
                                     </div>
                                 </div>

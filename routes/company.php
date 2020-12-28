@@ -40,6 +40,7 @@ Route::group(
                 Route::get('get/redeem/code', 'CompanyAppController@getRedeem');
                 Route::post('search/redeem/code', 'CompanyAppController@getRedeemSearch');
                 Route::post('scan/redeem/code', 'CompanyAppController@scanRedeem');
+                Route::post('search/redeem/search', 'CompanyAppController@search');
 
             }
         );

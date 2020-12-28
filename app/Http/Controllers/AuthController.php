@@ -302,12 +302,8 @@ class AuthController extends Controller
         $request->validate([
             'first_name' => 'required|string|max:255',
             'second_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,u_email,'. $request->user()->u_email,
-            'password' => 'required|string|max:255'
-        ], [
-            'email.not_in' => 'Your email has taken',
+            'email' => 'required|string|email|max:255|unique:users,u_email,'. $request->user()->id,
         ]);
-        if (Hash::check($request->password, $request->user()->password)) {
             $user = $request->user();
             $user->u_first_name = $request->first_name;
             $user->u_second_name = $request->second_name;
@@ -316,12 +312,6 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Successfully Updated Account!'
             ], 200);
-        }
-        return response()->json([
-            'message' => 'Bad Data',
-            'errors' => [
-                'password' => 'Wrong Old password !'
-            ],
-        ], 422);
+      
     }
 }

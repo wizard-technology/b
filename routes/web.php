@@ -29,8 +29,10 @@ Route::name('dashboard.')->prefix('dashboard')->middleware(['isAdmin'])->group(
         
         Route::middleware(['hasAccess'])->group(
             function () {
+                Route::post('website/save', 'WebsiteController@save_article')->name('website.save');
                 Route::get('index', 'DashboardController@index')->name('index');
                 Route::post('index', 'DashboardController@show')->name('index.show');
+                Route::resource('social', 'SocialMediaController');
                 Route::resource('profile', 'AdminController');
                 Route::resource('setting', 'SettingController');
                 Route::resource('type', 'TypeController');

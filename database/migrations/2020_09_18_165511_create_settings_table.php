@@ -19,6 +19,8 @@ class CreateSettingsTable extends Migration
             $table->double('dinar');
             $table->text('message');
             $table->text('forget');
+            $table->text('ios');
+            $table->text('android');
             $table->boolean('state_app');
             $table->timestamps();
         });
@@ -28,6 +30,8 @@ class CreateSettingsTable extends Migration
                 'dinar' => 1250,
                 'message' => 'This is a verification OTP Code:',
                 'forget' => 'This is a verification OTP Code:',
+                'ios' => 'This is a Link of ios',
+                'android' => 'This is a Link of android',
                 'state_app' => true,
             )
         );
