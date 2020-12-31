@@ -36,15 +36,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#cat" role="tab">All Orders</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#bizz" role="tab">Bizz</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#chart" role="tab">Charts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#analays" role="tab">Analays</a>
-                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -120,22 +111,6 @@
                             </div> <!-- end col -->
                         </div> <!-- end row -->
 
-                    </div>
-
-                    <div class="tab-pane p-3" id="bizz" role="tabpanel">
-                        <p class="font-14 mb-0">
-                            Coming Soon ..
-                        </p>
-                    </div>
-                    <div class="tab-pane p-3" id="chart" role="tabpanel">
-                        <p class="font-14 mb-0">
-                            Coming Soon ..
-                        </p>
-                    </div>
-                    <div class="tab-pane p-3" id="analays" role="tabpanel">
-                        <p class="font-14 mb-0">
-                            Coming Soon ..
-                        </p>
                     </div>
                 </div>
 

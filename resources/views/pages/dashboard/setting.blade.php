@@ -215,6 +215,18 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <input class="form-control {{ $errors->has('dinar')? 'is-invalid' : '' }}"
+                                        name="dinar" type="text" required="" placeholder="Dinar to dollar"
+                                        value="{{old('dinar') ?? $setting->dinar}}">
+                                    @if($errors->has('dinar'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('dinar') }}
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
                             
                             <div class="checkbox my-2">
                                 <div class="custom-control custom-checkbox">

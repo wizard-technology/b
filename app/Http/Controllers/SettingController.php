@@ -116,6 +116,7 @@ class SettingController extends Controller
     {
         $request->validate([
             'bizzcoin' => 'required|numeric',
+            'dinar' => 'required|numeric',
             'message' => 'required|min:5|max:255',
             'forget' => 'required|min:5|max:255',
             'ios' => 'required|min:5|max:255',
@@ -128,6 +129,7 @@ class SettingController extends Controller
         $setting->forget = $request->forget;
         $setting->ios = $request->ios;
         $setting->android = $request->android;
+        $setting->dinar = $request->dinar;
         $setting->state_app = $request->state == 'on' ? 1 : 0;
         $setting->save();
         Logger::create([

@@ -36,15 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#cat" role="tab">Change Information</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#create" role="tab">Change Information</a>
-                    </li> 
-                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#chart" role="tab">Charts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#analays" role="tab">Analays</a>
-                    </li> --}}
+
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -138,57 +130,7 @@
                             </div> <!-- end col -->
                         </div> <!-- end row -->
                     </div>
-                    {{-- <div class="tab-pane p-3" id="create" role="tabpanel">
-                        <form action="{{route('dashboard.tag.store')}}" method="post">
-                    @csrf
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <input class="form-control {{ $errors->has('name')? 'is-invalid' : '' }}" type="text"
-                                required="" name="name" placeholder="Name" value="{{old('name')}}">
-                            @if($errors->has('name'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('name') }}
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <input class="form-control {{ $errors->has('name_kurdish')? 'is-invalid' : '' }}"
-                                type="text" required="" name="name kurdish" dir="rtl" placeholder="ناو"
-                                value="{{old('name_kurdish')}}">
-                            @if($errors->has('name_kurdish'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('name_kurdish') }}
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="checkbox my-2">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" name="state" id="customCheck"
-                                data-parsley-multiple="groups" data-parsley-mincheck="2">
-                            <label class="custom-control-label" for="customCheck">Publish</label>
-                        </div>
-                    </div>
-                    <div class="form-group text-right row m-t-20">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-                <div class="tab-pane p-3" id="chart" role="tabpanel">
-                    <p class="font-14 mb-0">
-                        Coming Soon ..
-                    </p>
-                </div>
-                <div class="tab-pane p-3" id="analays" role="tabpanel">
-                    <p class="font-14 mb-0">
-                        Coming Soon ..
-                    </p>
-                </div> --}}
+                   
             </div>
 
         </div>

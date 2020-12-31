@@ -168,21 +168,23 @@ class HomeController extends Controller
     public function cartGet(Request $request)
     {
         $cart = Cart::with('product')->where('c_user', $request->user()->id)->where('c_state', 0)->orderBy('created_at', 'DESC')->get();
-        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
+        $bizz = Setting::orderBy('id', 'DESC')->first();
         return response()->json([
             'cart' =>  $cart,
             'total' => $cart->sum('c_price_all') / $bizz,
             'dollar' => $cart->sum('c_price_all'),
-            'bizzcoin' => $bizz
+            'dinar' =>  $bizz->dinar,
+            'bizzcoin' => $bizz->bizzcoin
 
         ], 200);
     }
     public function bizzcoin()
     {
-        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
+        $bizz = Setting::orderBy('id', 'DESC')->first();
         $bizzcoin = Bizzpayment::where('bz_state', 1)->orderBy('created_at', 'DESC')->get();
         return response()->json([
-            'now' =>  $bizz,
+            'now' =>  $bizz->bizzcoin,
+            'dinar' =>  $bizz->dinar,
             'bizzcoin' =>  $bizzcoin,
         ], 200);
     }
@@ -301,12 +303,13 @@ class HomeController extends Controller
         $cart = Cart::find($request->doc);
         $cart->delete();
         $cart = Cart::with('product')->where('c_user', $request->user()->id)->where('c_state', 0)->orderBy('created_at', 'DESC')->get();
-        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
+        $bizz = Setting::orderBy('id', 'DESC')->first();
 
         return response()->json([
             'message' =>  ['Deleted successfuly'],
             'total' => $cart->sum('c_price_all') / $bizz,
-            'bizzcoin' => $bizz
+            'dinar' =>  $bizz->dinar,
+            'bizzcoin' => $bizz->bizzcoin
         ], 200);
     }
     public function amountChange(Request $request)
@@ -328,13 +331,14 @@ class HomeController extends Controller
             }
         }
         $total = Cart::where('c_user', $request->user()->id)->where('c_state', 0)->get();
-        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
+        $bizz = Setting::orderBy('id', 'DESC')->first();
         return response()->json([
             'message' =>  ['Changed successfuly'],
             'cart' => $cart,
             'total' => $total->sum('c_price_all') / $bizz,
             'dollar' => $total->sum('c_price_all'),
-            'bizzcoin' =>  $bizz,
+            'dinar' =>  $bizz->dinar,
+            'bizzcoin' => $bizz->bizzcoin
         ], 200);
     }
     public function onSearch($text)
@@ -419,10 +423,11 @@ class HomeController extends Controller
             $product = Cart::with(['product'])->where('c_doc_id', $cart)->get();
             $type = false;
         }
-        $bizz = Setting::orderBy('id', 'DESC')->first()->bizzcoin;
+        $bizz = Setting::orderBy('id', 'DESC')->first();
         return response()->json([
             'product' => $product,
-            'bizzcoin' => $bizz,
+            'dinar' =>  $bizz->dinar,
+            'bizzcoin' => $bizz->bizzcoin,
             'type' => $type,
         ], 200);
     }
@@ -547,9 +552,6 @@ class HomeController extends Controller
             'qr' => saveImageBase64($dataUri)
         ], 200);
     }
-   
-
-
     public function web_hook(Request $request)
     {
         $user = User::findOrFail($request->header('user-id'));
