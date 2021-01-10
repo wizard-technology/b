@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{config('app.name') }} </title>
     <meta name="description" content="Everything you are looking for ">
-    <link rel="stylesheet" href="{{asset('web/style.css')}}" />
+    <link rel="stylesheet" href="{{asset('web/RTL.css')}}" />
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
     {{-- <style>
         .feather {
@@ -32,10 +32,6 @@
             </a>
 
             <div class="flex">
-
-                <a href="{{route('terms',Session::get('lang'))}}" id="link">{{__('text.term')}}</a>
-
-
                 <div class="flex-ver">
 
                     <div onclick="showlang(this)" id="lang-icon">
@@ -60,6 +56,9 @@
                     </div>
 
                 </div>
+                <a href="{{route('terms',Session::get('lang'))}}" id="link">{{__('text.term')}}</a>
+
+               
 
             </div>
 
@@ -71,16 +70,18 @@
 
             <div class="banner">
                 <div>
-
-                    @if (Session::get('lang') == 'en' )
-                    <p id="brand"> {!! json_decode($title->ar_article) !!}</p>
-                    <p id="Moto"> {!! json_decode($desc->ar_article) !!}</p>
+                    @if (Session::get('lang') == 'ar' )
+                    <p id="brand"> {!! json_decode($title->ar_article_ar) !!}</p>
+                    <p id="Moto"> {!! json_decode($desc->ar_article_ar) !!}</p>
                     @endif
-                    @if (Session::get('lang') == 'kr' )
-                    <p id="brand"> {!! json_decode($title->ar_article_kr) !!}</p>
-                    <p id="Moto"> {!! json_decode($desc->ar_article_kr) !!}</p>
+                    @if (Session::get('lang') == 'ku' )
+                    <p id="brand"> {!! json_decode($title->ar_article_ku) !!}</p>
+                    <p id="Moto"> {!! json_decode($desc->ar_article_ku) !!}</p>
                     @endif
-
+                    @if (Session::get('lang') == 'pr' )
+                    <p id="brand"> {!! json_decode($title->ar_article_pr) !!}</p>
+                    <p id="Moto"> {!! json_decode($desc->ar_article_pr) !!}</p>
+                    @endif
                 </div>
                 <a id="Dawnload" href="#download">{{__('text.download')}}</a>
             </div>
@@ -165,7 +166,6 @@
 
         <h1 style="text-align: center;margin-top: 10%;">
             {{__('text.loved')}}
-
             {{-- <svg style="fill: #ff414d;" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
                 fill="none" stroke="#ff414d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="feather feather-heart">
@@ -173,7 +173,7 @@
                     d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                 </path>
             </svg> --}}
-        
+
         </h1>
 
     </div>
@@ -182,6 +182,7 @@
     <div style=" margin-top: 5%; text-align: center;">
         <h3>Bizz</h3>
         <p>{{__('text.articl2')}} {{__('text.articl3')}}</p>
+
 
         <div id="social">
             @foreach ($social as $item)

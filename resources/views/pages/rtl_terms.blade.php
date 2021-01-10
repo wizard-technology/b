@@ -67,7 +67,15 @@
 
         <h3 id="link">{{__('text.term')}}</h3>
         <div>
-            {!! json_decode($data->ar_article) !!}
+            @if (Session::get('lang') == 'ar' )
+            {!! json_decode($data->ar_article_ar) !!}
+            @endif
+            @if (Session::get('lang') == 'ku' )
+            {!! json_decode($data->ar_article_ku) !!}
+            @endif
+            @if (Session::get('lang') == 'pr' )
+            {!! json_decode($data->ar_article_pr) !!}
+            @endif
         </div>
     </div>
 

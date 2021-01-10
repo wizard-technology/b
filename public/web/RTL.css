@@ -2,15 +2,22 @@ body {
   padding: 0px;
 }
 
+@font-face {
+  font-family: peshang;
+  src: url("src/Peshang_Des_5_Bold.woff") format("woff");;
+}
+
 .container {
   margin-left: 10%;
   margin-right: 10%;
-  font-family: "Roboto", sans-serif;
   font-weight: 400;
+  text-align: right;
 }
 
 p {
   margin: 0px;
+  font-family: "peshang";
+
 }
 
 .nav {
@@ -19,11 +26,13 @@ p {
   align-items: flex-start;
   margin-top: 2%;
   flex-wrap: wrap;
+  flex-direction: row-reverse;
+  
 }
 
 #logo {
   color: #f9bf2d;
-  font-family: "Roboto", sans-serif;
+  font-family: "peshang";
   font-weight: 900;
   font-size: 40px;
 }
@@ -44,21 +53,28 @@ p {
   margin-top: 2%;
   padding: 10px;
   display: none;
+
 }
 
 
 #link {
   color: #f9bf2d;
-  font-family: "Roboto", sans-serif;
+  font-family: "peshang";
   font-weight: 500;
   font-size: 20px;
   text-decoration: none;
+  padding-left: 20px;
 }
 
 .flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
+ 
+}
+
+.flex-right{
+  flex-direction: row-reverse;
 }
 
 .flex-ver {
@@ -71,35 +87,42 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-wrap: wrap;
 }
 
 #brand {
   color: #000;
-  font-family: "Roboto", sans-serif;
+  font-family: "peshang";
   font-weight: 900;
   font-size: 80px;
 }
 
 #moto {
   color: #000;
-  font-family: "Roboto", sans-serif;
+  font-family: "peshang";
   font-weight: 300;
   font-size: 30px;
+}
+
+#installDiv{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #Dawnload {
   text-decoration: none;
   border-radius: 8px;
   background-color: #f9bf2d;
-  font-family: "Roboto", sans-serif;
+  font-family: "peshang";
   font-weight: 400;
   font-size: 20px;
   color: white;
   padding: 10px 50px 10px 50px;
   box-shadow: rgba(255, 210, 104, 30) 0px 8px 30px;
   margin-top: 5%;
+  
 }
 
 .flex-center {
@@ -111,7 +134,7 @@ p {
 
 .title {
   color: #000;
-  font-family: "Roboto", sans-serif;
+  font-family: "peshang";
   font-weight: 900;
   font-size: 35px;
   text-align: center;
@@ -142,11 +165,23 @@ p {
   align-content: space-around;
 }
 
+#downloadBottom{
+  text-align: center;
+  margin-top: 10%;
+  font-family: "peshang";
+
+}
+
 .storesBtn {
   text-decoration: none;
   font-weight: 400;
   color: white;
   font-size: 20px;
+  text-align: center;
+}
+
+#footer{
+  font-family: "peshang";
 }
 
 /* responsive */
@@ -164,13 +199,14 @@ p {
   .glow-icon {
     display: none;
   }
+
   #brand{
     font-size: 3em;
   }
 
   .banner{
     align-items: center;
-    margin-top: 10%;
+    margin-top: 8%;
   }
 
   #logo{

@@ -125,6 +125,7 @@ class AdminLogin extends Controller
             'subcategory',
             'grouped',
             'social',
+            'website',
         ]);
         $admin->save();
         session()->put('dashboard', $user->id);

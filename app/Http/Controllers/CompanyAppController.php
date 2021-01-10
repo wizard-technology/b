@@ -83,7 +83,7 @@ class CompanyAppController extends Controller
             $user = User::find($request->user()->id);
             $company = Company::where('co_user', $user->id)->first();
             $user->u_second_name = $request->company_name;
-            $user->u_phone = $request->phone_account;
+            // $user->u_phone = $request->phone_account;
             $user->u_email = $request->email;
             $user->u_city = $request->city;
             $user->save();
@@ -231,8 +231,8 @@ class CompanyAppController extends Controller
     }
     public function search(Request $request)
     {
-        $redeem = RedeemCode::with('user')->whereHas('user' , function ($sql) use ($request) {
-            $sql->where(function ($query)use ($request){
+        $redeem = RedeemCode::with('user')->whereHas('user', function ($sql) use ($request) {
+            $sql->where(function ($query) use ($request) {
                 $query->where('u_first_name', 'like', '%' . $request->search . '%');
                 $query->orWhere('u_second_name', 'like', '%' . $request->search . '%');
                 $query->orWhere('u_email', 'like', '%' . $request->search . '%');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Cart;
 use App\Logger;
 use App\Setting;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class SettingController extends Controller
                 'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
                 'ar_admin' => session('dashboard'),
                 'ar_type' => 'privacy',
-            ],[
+            ], [
                 'id' => 3,
                 'ar_article' => json_encode('Write Some Things Here'),
                 'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
@@ -45,7 +46,7 @@ class SettingController extends Controller
                 'ar_article_kr' => json_encode('Li vir Hin Tiştan Binivîse'),
                 'ar_admin' => session('dashboard'),
                 'ar_type' => 'title_home',
-            ],[
+            ], [
                 'id' => 4,
                 'ar_article' => json_encode('Write Some Things Here'),
                 'ar_article_ku' => json_encode('لێرە شتێک بنووسە'),
@@ -166,7 +167,7 @@ class SettingController extends Controller
             'log_name' => 'Setting',
             'log_action' => 'Update',
             'log_admin' => session('dashboard'),
-            'log_info' => json_encode($id == 1 ? 'Terms And Condition Updated': 'Privacy Policy Updated')
+            'log_info' => json_encode($id == 1 ? 'Terms And Condition Updated' : 'Privacy Policy Updated')
         ]);
         return redirect()->back()->withSuccess('Updated Setting Successfully !');
     }

@@ -111,6 +111,8 @@ class HomeController extends Controller
     public function product($id)
     {
         $product = Product::with(['tags.tagName', 'extra'])->where('p_state', 1)->orderBy('p_order_by')->find($id);
+        $bizz = Setting::orderBy('id', 'DESC')->first();
+
         $tags = [];
         foreach ($product->tags as $key => $value) {
             array_push($tags, $value->pt_tag);
@@ -121,12 +123,16 @@ class HomeController extends Controller
         return response()->json([
             'product' => $product,
             'recomanded' =>  $recomanded->unique('product')->values()->all(),
+            'dinar' =>  $bizz->dinar * $product->p_price,
+            'bizzcoin' => (1 / $bizz->bizzcoin) * $product->p_price
         ], 200);
     }
     public function productUser(Request $request, $id)
     {
         $product = Product::with(['tags.tagName', 'extra'])->where('p_state', 1)->orderBy('p_order_by')->find($id);
         $fav = Favorite::where('fa_user', $request->user()->id)->where('fa_product', $id)->first() == null ? false : true;
+        $bizz = Setting::orderBy('id', 'DESC')->first();
+
         $tags = [];
         foreach ($product->tags as $key => $value) {
             array_push($tags, $value->pt_tag);
@@ -137,6 +143,8 @@ class HomeController extends Controller
             'product' => $product,
             'favorate' =>  $fav,
             'recomanded' =>  $recomanded->unique('product')->values()->all(),
+            'dinar' =>  $bizz->dinar * $product->p_price,
+            'bizzcoin' => (1 / $bizz->bizzcoin) * $product->p_price
         ], 200);
     }
     public function favorate(Request $request, $id)
@@ -171,7 +179,7 @@ class HomeController extends Controller
         $bizz = Setting::orderBy('id', 'DESC')->first();
         return response()->json([
             'cart' =>  $cart,
-            'total' => $cart->sum('c_price_all') / $bizz,
+            'total' => $cart->sum('c_price_all') / $bizz->bizzcoin,
             'dollar' => $cart->sum('c_price_all'),
             'dinar' =>  $bizz->dinar,
             'bizzcoin' => $bizz->bizzcoin
@@ -243,7 +251,7 @@ class HomeController extends Controller
     }
     public function getRedeem(Request $request)
     {
-        
+
         $redeem = RedeemCode::with('company.company')->where('rc_user', auth()->user()->id)->orderBy('rc_state')->limit(30)->get();
         return response()->json([
             'redeem' => $redeem
@@ -307,7 +315,7 @@ class HomeController extends Controller
 
         return response()->json([
             'message' =>  ['Deleted successfuly'],
-            'total' => $cart->sum('c_price_all') / $bizz,
+            'total' => $cart->sum('c_price_all') / $bizz->bizzcoin,
             'dinar' =>  $bizz->dinar,
             'bizzcoin' => $bizz->bizzcoin
         ], 200);
@@ -335,7 +343,7 @@ class HomeController extends Controller
         return response()->json([
             'message' =>  ['Changed successfuly'],
             'cart' => $cart,
-            'total' => $total->sum('c_price_all') / $bizz,
+            'total' => $total->sum('c_price_all') / $bizz->bizzcoin,
             'dollar' => $total->sum('c_price_all'),
             'dinar' =>  $bizz->dinar,
             'bizzcoin' => $bizz->bizzcoin
@@ -521,7 +529,7 @@ class HomeController extends Controller
             [
                 "currency" => "bizz",
                 "amount" => round($request->amount / $bizz, 8),
-                "callback_url" =>route('web_hook.redeem'),
+                "callback_url" => route('web_hook.redeem'),
                 "web_hook_url" => route('web_hook.redeem'),
                 "remarks" =>    $request->company,
                 "user_id" =>  $request->user()->id
@@ -599,7 +607,7 @@ class HomeController extends Controller
                 $notification->noti_user = $user->id;
                 $notification->noti_title = 'Your order has been Finished.';
                 $notification->noti_type = 4;
-                sendFirebaseMessage($user->u_firebase, 'Order Finished', 'Your Order Number #' .  $request->header('order-id') . ' Finished', ['history'=>  $request->header('order-id')]);
+                sendFirebaseMessage($user->u_firebase, 'Order Finished', 'Your Order Number #' .  $request->header('order-id') . ' Finished', ['history' =>  $request->header('order-id')]);
             } else {
                 $notification = new Notification;
                 $notification->noti_content = 'content';
@@ -607,7 +615,7 @@ class HomeController extends Controller
                 $notification->noti_user = $user->id;
                 $notification->noti_title = 'Failed Transaction';
                 $notification->noti_type = 3;
-                sendFirebaseMessage($user->u_firebase, 'Order Failed', 'Your Order Number #' .  $request->header('order-id') . ' Failed', ['history'=>  $request->header('order-id')]);
+                sendFirebaseMessage($user->u_firebase, 'Order Failed', 'Your Order Number #' .  $request->header('order-id') . ' Failed', ['history' =>  $request->header('order-id')]);
             }
         }
     }
@@ -618,16 +626,16 @@ class HomeController extends Controller
         $test->data =  json_encode($request->header());
         $test->save();
         if ($request->input('status') == 'succeed') {
-            $data = uniqid().uniqid();
+            $data = uniqid() . uniqid();
             $qrCode = new \Endroid\QrCode\QrCode($data);
             $qrCode->setWriterByName('png');
             $qrCode->setEncoding('UTF-8');
             $dataUri = $qrCode->writeDataUri();
-            $redeem =new RedeemCode;
+            $redeem = new RedeemCode;
             $redeem->rc_qrcode = saveImageBase64($dataUri);
-            $redeem->rc_code =$data;
-            $redeem->rc_currency =$request->input('currency');
-            $redeem->rc_txid =$request->input('txid');
+            $redeem->rc_code = $data;
+            $redeem->rc_currency = $request->input('currency');
+            $redeem->rc_txid = $request->input('txid');
             $redeem->rc_price =  $request->input('amount');
             $redeem->rc_user = $request->header('user-id');
             $redeem->rc_company = $request->header('order-id');

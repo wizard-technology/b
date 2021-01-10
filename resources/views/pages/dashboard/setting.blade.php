@@ -152,13 +152,14 @@
 
                     </div>
                     <div class="tab-pane p-3" id="create" role="tabpanel">
-                        <form action="{{route('dashboard.setting.update',$setting->id)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('dashboard.setting.update',$setting->id)}}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group row">
                                 <div class="col-12">
                                     <input class="form-control {{ $errors->has('bizzcoin')? 'is-invalid' : '' }}"
-                                        name="bizzcoin"   type="text" required="" placeholder="Bizzcoin per 1 Dollar"
+                                        name="bizzcoin" type="text" required="" placeholder="Bizzcoin per 1 Dollar"
                                         value="{{old('bizzcoin') ?? $setting->bizzcoin}}">
                                     @if($errors->has('bizzcoin'))
                                     <div class="invalid-feedback">
@@ -193,8 +194,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control {{ $errors->has('ios')? 'is-invalid' : '' }}"
-                                        name="ios" type="text" required="" placeholder="App Store Link"
+                                    <input class="form-control {{ $errors->has('ios')? 'is-invalid' : '' }}" name="ios"
+                                        type="text" required="" placeholder="App Store Link"
                                         value="{{old('ios') ?? $setting->ios}}">
                                     @if($errors->has('ios'))
                                     <div class="invalid-feedback">
@@ -227,7 +228,7 @@
                                     @endif
                                 </div>
                             </div>
-                            
+
                             <div class="checkbox my-2">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"
@@ -244,33 +245,39 @@
                         </form>
                     </div>
                     <div class="tab-pane p-3" id="term" role="tabpanel">
-                        <form action="{{route('dashboard.setting.more',1)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('dashboard.setting.more',1)}}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">Terms And Condition</label>
-                                    <textarea  class="form-control summernote" name="article_english"  cols="30" rows="10">{!!  json_decode($article[0]->ar_article)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_english" cols="30"
+                                        rows="10">{!!  json_decode($article[0]->ar_article)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">Termsert û merc</label>
-                                    <textarea  class="form-control summernote" name="article_kurmanji" cols="30" rows="10">{!!  json_decode($article[0]->ar_article_kr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_kurmanji" cols="30"
+                                        rows="10">{!!  json_decode($article[0]->ar_article_kr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">مەرجەکانی بەکارهێنان</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_kurdish" cols="30" rows="10">{!!  json_decode($article[0]->ar_article_ku)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_kurdish" cols="30"
+                                        rows="10">{!!  json_decode($article[0]->ar_article_ku)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">أحكام وشروط</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_arabic" cols="30" rows="10">{!!  json_decode($article[0]->ar_article_ar)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_arabic" cols="30"
+                                        rows="10">{!!  json_decode($article[0]->ar_article_ar)  !!}</textarea>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">شرایط و ضوابط</label>
-                                    <textarea  class="form-control summernote" name="article_persian"  cols="30" rows="10">{!!  json_decode($article[0]->ar_article_pr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_persian" cols="30"
+                                        rows="10">{!!  json_decode($article[0]->ar_article_pr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group text-right row m-t-20">
@@ -281,33 +288,39 @@
                         </form>
                     </div>
                     <div class="tab-pane p-3" id="privacy" role="tabpanel">
-                        <form action="{{route('dashboard.setting.more',2)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('dashboard.setting.more',2)}}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">Privacy Policy</label>
-                                    <textarea  class="form-control summernote" name="article_english"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_english" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">Siyaseta taybetîtiyê</label>
-                                    <textarea  class="form-control summernote" name="article_kurmanji" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_kr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_kurmanji" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_kr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">سیاسەتی تایبەتێتی</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_kurdish" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ku)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_kurdish" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_ku)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">سياسة الخصوصية</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_arabic" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ar)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_arabic" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_ar)  !!}</textarea>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">سیاست حفظ حریم خصوصی</label>
-                                    <textarea  class="form-control summernote" name="article_persian"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article_pr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_persian" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_pr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group text-right row m-t-20">
@@ -318,33 +331,39 @@
                         </form>
                     </div>
                     <div class="tab-pane p-3" id="privacy" role="tabpanel">
-                        <form action="{{route('dashboard.setting.more',2)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('dashboard.setting.more',2)}}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">Privacy Policy</label>
-                                    <textarea  class="form-control summernote" name="article_english"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_english" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">Siyaseta taybetîtiyê</label>
-                                    <textarea  class="form-control summernote" name="article_kurmanji" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_kr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_kurmanji" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_kr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">سیاسەتی تایبەتێتی</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_kurdish" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ku)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_kurdish" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_ku)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">سياسة الخصوصية</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_arabic" cols="30" rows="10">{!!  json_decode($article[1]->ar_article_ar)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_arabic" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_ar)  !!}</textarea>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">سیاست حفظ حریم خصوصی</label>
-                                    <textarea  class="form-control summernote" name="article_persian"  cols="30" rows="10">{!!  json_decode($article[1]->ar_article_pr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_persian" cols="30"
+                                        rows="10">{!!  json_decode($article[1]->ar_article_pr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group text-right row m-t-20">
@@ -355,43 +374,53 @@
                         </form>
                     </div>
                     <div class="tab-pane p-3" id="website" role="tabpanel">
-                        <form action="{{route('dashboard.website.save')}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('dashboard.setting.save')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">Home Title</label>
-                                    <input type="text" name="article_english_title" class="form-control" id="" value="{!!  json_decode($article[2]->ar_article)  !!}">
+                                    <input type="text" name="article_english_title" class="form-control" id=""
+                                        value="{!!  json_decode($article[2]->ar_article)  !!}">
                                     <label for="">Home Description</label>
-                                    <textarea  class="form-control summernote" name="article_english_desc"  cols="30" rows="10">{!!  json_decode($article[3]->ar_article)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_english_desc" cols="30"
+                                        rows="10">{!!  json_decode($article[3]->ar_article)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">Sernavê malê</label>
-                                    <input type="text" name="article_kurmanji_title" class="form-control" id="" value="{!!  json_decode($article[2]->ar_article_kr)  !!}">
+                                    <input type="text" name="article_kurmanji_title" class="form-control" id=""
+                                        value="{!!  json_decode($article[2]->ar_article_kr)  !!}">
                                     <label for="">Danasîna malê</label>
-                                    <textarea  class="form-control summernote" name="article_kurmanji_desc" cols="30" rows="10">{!!  json_decode($article[3]->ar_article_kr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_kurmanji_desc" cols="30"
+                                        rows="10">{!!  json_decode($article[3]->ar_article_kr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">ناونیشانی سەرەکی</label>
-                                    <input type="text" name="article_kurdish_title" class="form-control" id="" value="{!!  json_decode($article[2]->ar_article_ku)  !!}">
+                                    <input type="text" name="article_kurdish_title" class="form-control" id=""
+                                        value="{!!  json_decode($article[2]->ar_article_ku)  !!}">
                                     <label for="">زانیاری سەرەکی</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_kurdish_desc" cols="30" rows="10">{!!  json_decode($article[3]->ar_article_ku)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_kurdish_desc"
+                                        cols="30" rows="10">{!!  json_decode($article[3]->ar_article_ku)  !!}</textarea>
                                 </div>
                                 <div class="col-6">
                                     <label for="">عنوان المنزل</label>
-                                    <input type="text" name="article_arabic_title" class="form-control" id="" value="{!!  json_decode($article[2]->ar_article_ar)  !!}">
+                                    <input type="text" name="article_arabic_title" class="form-control" id=""
+                                        value="{!!  json_decode($article[2]->ar_article_ar)  !!}">
                                     <label for="">وصف المنزل</label>
-                                    <textarea  class="form-control summernote" dir="rtl" name="article_arabic_desc" cols="30" rows="10">{!!  json_decode($article[3]->ar_article_ar)  !!}</textarea>
+                                    <textarea class="form-control summernote" dir="rtl" name="article_arabic_desc"
+                                        cols="30" rows="10">{!!  json_decode($article[3]->ar_article_ar)  !!}</textarea>
 
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
                                     <label for="">عنوان خانه</label>
-                                    <input type="text" name="article_persian_title" class="form-control" id="" value="{!!  json_decode($article[2]->ar_article_pr)  !!}">
+                                    <input type="text" name="article_persian_title" class="form-control" id=""
+                                        value="{!!  json_decode($article[2]->ar_article_pr)  !!}">
                                     <label for="">توضیحات خانه</label>
-                                    <textarea  class="form-control summernote" name="article_persian_desc"  cols="30" rows="10">{!!  json_decode($article[3]->ar_article_pr)  !!}</textarea>
+                                    <textarea class="form-control summernote" name="article_persian_desc" cols="30"
+                                        rows="10">{!!  json_decode($article[3]->ar_article_pr)  !!}</textarea>
                                 </div>
                             </div>
                             <div class="form-group text-right row m-t-20">

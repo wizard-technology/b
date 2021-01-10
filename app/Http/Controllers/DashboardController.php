@@ -11,25 +11,39 @@ use App\SocialMedia;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class DashboardController extends Controller
 {
-    public function home()
+    public function home($lang = null)
     {
         $title = Article::findOrfail(3);
         $desc = Article::findOrfail(4);
-        $social = SocialMedia::where('sm_state',1)->get();
+        $social = SocialMedia::where('sm_state', 1)->get();
         $setting = Setting::first();
-
-        return view('pages.index',['title'=>$title,'desc'=>$desc,'social'=>$social,'setting'=>$setting]);
+        Session::put('lang', $lang ?? 'en');
+        app()->setlocale(Session::get('lang'));
+        if ($lang == null || $lang ==  'kr' || $lang == 'en') {
+            return view('pages.index', ['title' => $title, 'desc' => $desc, 'social' => $social, 'setting' => $setting]);
+        } else {
+            return view('pages.rtl_index', ['title' => $title, 'desc' => $desc, 'social' => $social, 'setting' => $setting]);
+        }
     }
-    public function terms()
+
+    public function terms($lang = null)
     {
         $data = Article::findOrfail(1);
-        return view('pages.terms',['data'=>$data]);
-
+        Session::put('lang', $lang ?? 'en');
+        app()->setlocale(Session::get('lang'));
+        if ($lang == null || $lang ==  'kr' || $lang == 'en') {
+            return view('pages.terms', ['data' => $data]);
+        } else {
+            return view('pages.rtl_terms', ['data' => $data]);
+        }
     }
     public function index()
     {

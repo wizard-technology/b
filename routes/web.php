@@ -12,8 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'DashboardController@home')->name('home');
-Route::get('/terms-and-conditions', 'DashboardController@terms')->name('terms');
+
+Route::get('/{lang?}', 'DashboardController@home')->name('home');
+Route::get('/terms-and-conditions/{lang?}', 'DashboardController@terms')->name('terms');
+// Route::get('/language/', 'DashboardController@langs')->name('langs');
+
 
 Route::get('/dashboard/login', 'AdminLogin@login')->name('dashboard.login');
 Route::post('/dashboard/signup', 'AdminLogin@signup')->name('dashboard.signup');
@@ -26,10 +29,10 @@ Route::name('dashboard.')->prefix('dashboard')->middleware(['isAdmin'])->group(
     function () {
         Route::get('logout', 'AdminLogin@logout')->name('logout');
         Route::post('/dashboard/translate', 'DashboardController@translate')->name('translate');
-        
+
         Route::middleware(['hasAccess'])->group(
             function () {
-                Route::post('website/save', 'WebsiteController@save_article')->name('website.save');
+                Route::post('website/save', 'WebsiteController@save_article')->name('setting.save');
                 Route::get('index', 'DashboardController@index')->name('index');
                 Route::post('index', 'DashboardController@show')->name('index.show');
                 Route::resource('social', 'SocialMediaController');
