@@ -21,9 +21,55 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Product::with(['tags.tagName', 'type', 'subcategory', 'grouped'])->orderBy('id', 'DESC')->get();
+        if ($request->search == 'search') {
+            $data = Product::query();
+            if (isset($request->category)) {
+                $data->where('p_type', $request->category);
+                // dd(1);
+            }
+            if (isset($request->subcategory)) {
+                $data->where('p_subcategory', $request->subcategory);
+                // dd(2);
+
+            }
+            if (isset($request->grouped)) {
+                $data->where('p_grouped', $request->grouped);
+                // dd(3);
+
+            }
+            if (isset($request->priority)) {
+                $data->where('p_order_by', $request->priority);
+                // dd(4);
+
+            }
+            if (isset($request->min)) {
+                $data->where('p_price', '>=', $request->min);
+                // dd(5);
+            }
+            if (isset($request->max)) {
+                $data->where('p_price', '<=', $request->max);
+                // dd(6);
+            }
+            // if (isset($request->tag)) {
+            //     $data->where('p_price', '<=', $request->max);
+            //     // dd(6);
+            // }
+            if (isset($request->hasinfo)) {
+                $data->where('p_has_info', 1);
+            } else {
+                $data->where('p_has_info', 0);
+            }
+            if (isset($request->state)) {
+                $data->where('p_state', 1);
+            } else {
+                $data->where('p_state', 0);
+            }
+            $data = $data->with(['tags.tagName', 'type', 'subcategory', 'grouped'])->orderBy('id', 'DESC')->get();
+        } else {
+            $data = Product::orderBy('id', 'DESC')->get();
+        }
         $type = Type::where('t_state', 1)->get();
         $tag = Tag::where('tg_state', 1)->get();
         return view('pages.product.index', [
@@ -146,9 +192,8 @@ class ProductController extends Controller
     {
         $product = Product::with('extra')->findOrFail($id);
         return view('pages.product.show', [
-           'data'=>$product
+            'data' => $product
         ]);
-       
     }
 
     /**
@@ -287,7 +332,7 @@ class ProductController extends Controller
         }
         return redirect()->back()->withErrors('You can not delete this product !');
     }
-    public function extra_image(Request $request,$id)
+    public function extra_image(Request $request, $id)
     {
         $request->validate([
             'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
@@ -304,7 +349,7 @@ class ProductController extends Controller
             'log_info' => json_encode($extra->toArray())
         ]);
     }
-    public function extra_delete(Request $request,$id)
+    public function extra_delete(Request $request, $id)
     {
         $image = Imageproduct::findOrFail($id);
         Storage::delete('public/' . $image->i_link);
@@ -316,6 +361,5 @@ class ProductController extends Controller
             'log_info' => json_encode($image->toArray())
         ]);
         return redirect()->back()->withSuccess('Deleted Extra Image Successfully !');
-
     }
 }

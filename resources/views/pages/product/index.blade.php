@@ -39,6 +39,9 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#create" role="tab">Create Product</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#search" role="tab">Search</a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -92,8 +95,10 @@
                                                             class="badge bg-danger badge-pill">Inactive</span>' !!}
                                                     </td>
                                                     <td>{{$value->type->t_name}} / {{$value->type->t_name_ku}}</td>
-                                                    <td>{{$value->subcategory->st_name}} / {{$value->subcategory->st_name_ku}}</td>
-                                                    <td>{{$value->grouped->gr_name}} / {{$value->grouped->gr_name_ku}}</td>
+                                                    <td>{{$value->subcategory->st_name}} /
+                                                        {{$value->subcategory->st_name_ku}}</td>
+                                                    <td>{{$value->grouped->gr_name}} / {{$value->grouped->gr_name_ku}}
+                                                    </td>
                                                     <td>
                                                         @foreach ($value->tags as $tg)
                                                         {{ $tg->tagName->tg_name }} / {{ $tg->tagName->tg_name_ku }}
@@ -156,7 +161,8 @@
                                                                         <div class="col-12">
                                                                             <input class="form-control" type="text"
                                                                                 required="" name="name"
-                                                                                placeholder="Name"  id="tranlate_en_{{$value->id}}"
+                                                                                placeholder="Name"
+                                                                                id="tranlate_en_{{$value->id}}"
                                                                                 value="{{$value->p_name}}">
 
                                                                         </div>
@@ -165,7 +171,8 @@
                                                                         <div class="col-12">
                                                                             <input class="form-control" type="text"
                                                                                 required="" name="name kurmanji"
-                                                                                placeholder="Nav"  id="tranlate_kr_{{$value->id}}"
+                                                                                placeholder="Nav"
+                                                                                id="tranlate_kr_{{$value->id}}"
                                                                                 value="{{$value->p_name_kr}}">
 
                                                                         </div>
@@ -174,7 +181,8 @@
                                                                         <div class="col-12">
                                                                             <input class="form-control" type="text"
                                                                                 required="" name="name kurdish"
-                                                                                dir="rtl" placeholder="ناو"  id="tranlate_ku_{{$value->id}}"
+                                                                                dir="rtl" placeholder="ناو"
+                                                                                id="tranlate_ku_{{$value->id}}"
                                                                                 value="{{$value->p_name_ku}}">
 
                                                                         </div>
@@ -182,8 +190,9 @@
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
                                                                             <input class="form-control" type="text"
-                                                                                required="" name="name arabic"
-                                                                                dir="rtl" placeholder="اسم"  id="tranlate_ar_{{$value->id}}"
+                                                                                required="" name="name arabic" dir="rtl"
+                                                                                placeholder="اسم"
+                                                                                id="tranlate_ar_{{$value->id}}"
                                                                                 value="{{$value->p_name_ar}}">
 
                                                                         </div>
@@ -192,98 +201,158 @@
                                                                         <div class="col-12">
                                                                             <input class="form-control" type="text"
                                                                                 required="" name="name persian"
-                                                                                dir="rtl" placeholder="نام"  id="tranlate_pr_{{$value->id}}"
+                                                                                dir="rtl" placeholder="نام"
+                                                                                id="tranlate_pr_{{$value->id}}"
                                                                                 value="{{$value->p_name_pr}}">
 
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <input class="form-control" 
-                                                                                required="" name="price"
-                                                                                placeholder="Price"
+                                                                            <input class="form-control" required=""
+                                                                                name="price" placeholder="Price"
                                                                                 value="{{$value->p_price}}">
 
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <textarea class="form-control" name="info" id="translate_info_en_{{$value->id}}" cols="5" rows="10">{{$value->p_info}}</textarea>
+                                                                            <textarea class="form-control" name="info"
+                                                                                id="translate_info_en_{{$value->id}}"
+                                                                                cols="5"
+                                                                                rows="10">{{$value->p_info}}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <textarea class="form-control" name="info kurmanji" id="translate_info_kr_{{$value->id}}" cols="5" rows="10">{{$value->p_info_ku}}</textarea>
+                                                                            <textarea class="form-control"
+                                                                                name="info kurmanji"
+                                                                                id="translate_info_kr_{{$value->id}}"
+                                                                                cols="5"
+                                                                                rows="10">{{$value->p_info_ku}}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <textarea class="form-control" name="info kurdish" dir="rtl" id="translate_info_ku_{{$value->id}}" cols="5" rows="10">{{$value->p_info_ku}}</textarea>
+                                                                            <textarea class="form-control"
+                                                                                name="info kurdish" dir="rtl"
+                                                                                id="translate_info_ku_{{$value->id}}"
+                                                                                cols="5"
+                                                                                rows="10">{{$value->p_info_ku}}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <textarea class="form-control" name="info arabic" dir="rtl" id="translate_info_ar_{{$value->id}}" cols="5" rows="10">{{$value->p_info_ar}}</textarea>
+                                                                            <textarea class="form-control"
+                                                                                name="info arabic" dir="rtl"
+                                                                                id="translate_info_ar_{{$value->id}}"
+                                                                                cols="5"
+                                                                                rows="10">{{$value->p_info_ar}}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <div class="col-12">
-                                                                            <textarea class="form-control" name="info persian" dir="rtl" id="translate_info_pr_{{$value->id}}" cols="5" rows="10">{{$value->p_info_pr}}</textarea>
+                                                                            <textarea class="form-control"
+                                                                                name="info persian" dir="rtl"
+                                                                                id="translate_info_pr_{{$value->id}}"
+                                                                                cols="5"
+                                                                                rows="10">{{$value->p_info_pr}}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Priority</label>
+                                                                        <label
+                                                                            class="col-sm-2 col-form-label">Priority</label>
                                                                         <div class="col-sm-10">
-                                                                            <select class="form-control" name="priority">
-                                                                                <option {{5 == $value->p_order_by ? 'selected' : ''}} value="5">5</option>
-                                                                                <option {{4 == $value->p_order_by ? 'selected' : ''}} value="4">4</option>
-                                                                                <option {{3 == $value->p_order_by ? 'selected' : ''}} value="3">3</option>
-                                                                                <option {{2 == $value->p_order_by ? 'selected' : ''}} value="2">2</option>
-                                                                                <option {{1 == $value->p_order_by ? 'selected' : ''}} value="1">1</option>
+                                                                            <select class="form-control"
+                                                                                name="priority">
+                                                                                <option
+                                                                                    {{5 == $value->p_order_by ? 'selected' : ''}}
+                                                                                    value="5">5</option>
+                                                                                <option
+                                                                                    {{4 == $value->p_order_by ? 'selected' : ''}}
+                                                                                    value="4">4</option>
+                                                                                <option
+                                                                                    {{3 == $value->p_order_by ? 'selected' : ''}}
+                                                                                    value="3">3</option>
+                                                                                <option
+                                                                                    {{2 == $value->p_order_by ? 'selected' : ''}}
+                                                                                    value="2">2</option>
+                                                                                <option
+                                                                                    {{1 == $value->p_order_by ? 'selected' : ''}}
+                                                                                    value="1">1</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Category</label>
+                                                                        <label
+                                                                            class="col-sm-2 col-form-label">Category</label>
                                                                         <div class="col-sm-10">
-                                                                            <select name="category" onchange="subcategory_fun_update({{$value->id}})" class="form-control" id="category-{{$value->id}}">
+                                                                            <select name="category"
+                                                                                onchange="subcategory_fun_update({{$value->id}})"
+                                                                                class="form-control"
+                                                                                id="category-{{$value->id}}">
                                                                                 @foreach ($types as $key=>$cat)
-                                                                                <option {{$cat->id == $value->p_type ? 'selected' : ''}} value="{{$cat->id }}">{{$cat->t_name}} / {{$cat->t_name_ku }}
+                                                                                <option
+                                                                                    {{$cat->id == $value->p_type ? 'selected' : ''}}
+                                                                                    value="{{$cat->id }}">
+                                                                                    {{$cat->t_name}} /
+                                                                                    {{$cat->t_name_ku }}
                                                                                 </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Subcategory</label>
+                                                                        <label
+                                                                            class="col-sm-2 col-form-label">Subcategory</label>
                                                                         <div class="col-sm-10">
-                                                                            <select name="subcategory" onchange="grouped_fun_update({{$value->id}})" class="form-control" id="subcategory-{{$value->id}}">
-                                                                                <option selected  value="{{$value->subcategory->id }}">{{$value->subcategory->st_name}} / {{$value->subcategory->st_name_ku }}
+                                                                            <select name="subcategory"
+                                                                                onchange="grouped_fun_update({{$value->id}})"
+                                                                                class="form-control"
+                                                                                id="subcategory-{{$value->id}}">
+                                                                                <option selected
+                                                                                    value="{{$value->subcategory->id }}">
+                                                                                    {{$value->subcategory->st_name}} /
+                                                                                    {{$value->subcategory->st_name_ku }}
                                                                                 </option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Grouped</label>
+                                                                        <label
+                                                                            class="col-sm-2 col-form-label">Grouped</label>
                                                                         <div class="col-sm-10">
-                                                                            <select name="grouped" class="form-control"  id="grouped-{{$value->id}}">
-                                                                                <option selected  value="{{$value->grouped->id }}">{{$value->grouped->gr_name}} / {{$value->grouped->gr_name_ku }}
+                                                                            <select name="grouped" class="form-control"
+                                                                                id="grouped-{{$value->id}}">
+                                                                                <option selected
+                                                                                    value="{{$value->grouped->id }}">
+                                                                                    {{$value->grouped->gr_name}} /
+                                                                                    {{$value->grouped->gr_name_ku }}
                                                                                 </option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Tags</label>
+                                                                        <label
+                                                                            class="col-sm-2 col-form-label">Tags</label>
                                                                         <div class="col-sm-10">
-                                                                            <select class="select2 mb-3 select2-multiple" name="tag[]" style="width: 100%"
-                                                                                multiple="multiple" data-placeholder="Choose">
+                                                                            <select
+                                                                                class="select2 mb-3 select2-multiple"
+                                                                                name="tag[]" style="width: 100%"
+                                                                                multiple="multiple"
+                                                                                data-placeholder="Choose">
                                                                                 @php
-                                                                                    $pt = $value->tags->pluck('pt_tag')->toArray();
+                                                                                $pt =
+                                                                                $value->tags->pluck('pt_tag')->toArray();
                                                                                 @endphp
                                                                                 @foreach ($tags as $key=>$tgs)
-                                                                                <option {{in_array($tgs->id,  $pt) ? 'selected' : ''}}  value="{{$tgs->id}}">{{$tgs->tg_name}} / {{$tgs->tg_name_ku}}
+                                                                                <option
+                                                                                    {{in_array($tgs->id,  $pt) ? 'selected' : ''}}
+                                                                                    value="{{$tgs->id}}">
+                                                                                    {{$tgs->tg_name}} /
+                                                                                    {{$tgs->tg_name_ku}}
                                                                                 </option>
-                                        
+
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -326,13 +395,16 @@
                                                                                 {{ $value->p_has_info == 1 ?'checked' : '' }}
                                                                                 data-parsley-mincheck="2">
                                                                             <label class="custom-control-label"
-                                                                                for="customCheck{{$value->id}}-info">Has Info ?</label>
+                                                                                for="customCheck{{$value->id}}-info">Has
+                                                                                Info ?</label>
                                                                         </div>
                                                                     </div>
 
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-raised btn-success waves-effect waves-light ml-2" onclick="translates_id('{{$value->id}}',this)">Translate</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-raised btn-success waves-effect waves-light ml-2"
+                                                                        onclick="translates_id('{{$value->id}}',this)">Translate</button>
                                                                     <button type="submit"
                                                                         class="btn btn-raised btn-primary ml-2">Update</button>
                                                                     <button type="button"
@@ -352,14 +424,15 @@
                         </div> <!-- end row -->
 
                     </div>
-                    
+
                     <div class="tab-pane p-3" id="create" role="tabpanel">
                         <form action="{{route('dashboard.product.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control {{ $errors->has('name')? 'is-invalid' : '' }}" id="tranlate_en"
-                                        type="text" required="" name="name" placeholder="Name" value="{{old('name')}}">
+                                    <input class="form-control {{ $errors->has('name')? 'is-invalid' : '' }}"
+                                        id="tranlate_en" type="text" required="" name="name" placeholder="Name"
+                                        value="{{old('name')}}">
                                     @if($errors->has('name'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('name') }}
@@ -369,8 +442,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control {{ $errors->has('name_kurmanji')? 'is-invalid' : '' }}" id="tranlate_kr"
-                                        type="text" required="" name="name kurmanji" placeholder="Nav"
+                                    <input class="form-control {{ $errors->has('name_kurmanji')? 'is-invalid' : '' }}"
+                                        id="tranlate_kr" type="text" required="" name="name kurmanji" placeholder="Nav"
                                         value="{{old('name_kurmanji')}}">
                                     @if($errors->has('name_kurmanji'))
                                     <div class="invalid-feedback">
@@ -381,9 +454,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control {{ $errors->has('name_kurdish')? 'is-invalid' : '' }}" id="tranlate_ku"
-                                        type="text" required="" name="name kurdish" dir="rtl" placeholder="ناو"
-                                        value="{{old('name_kurdish')}}">
+                                    <input class="form-control {{ $errors->has('name_kurdish')? 'is-invalid' : '' }}"
+                                        id="tranlate_ku" type="text" required="" name="name kurdish" dir="rtl"
+                                        placeholder="ناو" value="{{old('name_kurdish')}}">
                                     @if($errors->has('name_kurdish'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('name_kurdish') }}
@@ -393,9 +466,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control {{ $errors->has('name_arabic')? 'is-invalid' : '' }}" id="tranlate_ar"
-                                        type="text" required="" name="name arabic" dir="rtl" placeholder="اسم"
-                                        value="{{old('name_arabic')}}">
+                                    <input class="form-control {{ $errors->has('name_arabic')? 'is-invalid' : '' }}"
+                                        id="tranlate_ar" type="text" required="" name="name arabic" dir="rtl"
+                                        placeholder="اسم" value="{{old('name_arabic')}}">
                                     @if($errors->has('name_arabic'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('name_arabic') }}
@@ -405,9 +478,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control {{ $errors->has('name_persian')? 'is-invalid' : '' }}" id="tranlate_pr"
-                                        type="text" required="" name="name persian" dir="rtl" placeholder="نام"
-                                        value="{{old('name_persian')}}">
+                                    <input class="form-control {{ $errors->has('name_persian')? 'is-invalid' : '' }}"
+                                        id="tranlate_pr" type="text" required="" name="name persian" dir="rtl"
+                                        placeholder="نام" value="{{old('name_persian')}}">
                                     @if($errors->has('name_persian'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('name_persian') }}
@@ -418,8 +491,7 @@
                             <div class="form-group row">
                                 <div class="col-12">
                                     <input class="form-control {{ $errors->has('price')? 'is-invalid' : '' }}"
-                                         required="" name="price" placeholder="Price"
-                                        value="{{old('price')}}">
+                                        required="" name="price" placeholder="Price" value="{{old('price')}}">
                                     @if($errors->has('price'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('price') }}
@@ -429,8 +501,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <textarea class="form-control {{ $errors->has('info')? 'is-invalid' : '' }}"  id="tranlate_info_en"
-                                        name="info" placeholder="Information" cols="5"
+                                    <textarea class="form-control {{ $errors->has('info')? 'is-invalid' : '' }}"
+                                        id="tranlate_info_en" name="info" placeholder="Information" cols="5"
                                         rows="10">{{old('info')}}</textarea>
                                     @if($errors->has('info'))
                                     <div class="invalid-feedback">
@@ -439,8 +511,9 @@
                                     @endif
                                 </div>
                                 <div class="col-6">
-                                    <textarea class="form-control {{ $errors->has('info_kurmanji')? 'is-invalid' : '' }}"   id="tranlate_info_kr"
-                                        name="info kurmanji" placeholder="Agahî" cols="5"
+                                    <textarea
+                                        class="form-control {{ $errors->has('info_kurmanji')? 'is-invalid' : '' }}"
+                                        id="tranlate_info_kr" name="info kurmanji" placeholder="Agahî" cols="5"
                                         rows="10">{{old('info_kurmanji')}}</textarea>
                                     @if($errors->has('info_kurmanji'))
                                     <div class="invalid-feedback">
@@ -451,9 +524,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <textarea class="form-control {{ $errors->has('info_kurdish')? 'is-invalid' : '' }}"   id="tranlate_info_ku"
-                                        name="info kurdish" placeholder="زانیاری" dir="rtl" cols="5"
-                                        rows="10">{{old('info_kurdish')}}</textarea>
+                                    <textarea class="form-control {{ $errors->has('info_kurdish')? 'is-invalid' : '' }}"
+                                        id="tranlate_info_ku" name="info kurdish" placeholder="زانیاری" dir="rtl"
+                                        cols="5" rows="10">{{old('info_kurdish')}}</textarea>
                                     @if($errors->has('info_kurdish'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('info_kurdish') }}
@@ -461,9 +534,9 @@
                                     @endif
                                 </div>
                                 <div class="col-6">
-                                    <textarea class="form-control {{ $errors->has('info_arabic')? 'is-invalid' : '' }}"  id="tranlate_info_ar"
-                                        name="info arabic" placeholder="معلومات" dir="rtl" cols="5"
-                                        rows="10">{{old('info_arabic')}}</textarea>
+                                    <textarea class="form-control {{ $errors->has('info_arabic')? 'is-invalid' : '' }}"
+                                        id="tranlate_info_ar" name="info arabic" placeholder="معلومات" dir="rtl"
+                                        cols="5" rows="10">{{old('info_arabic')}}</textarea>
                                     @if($errors->has('info_arabic'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('info_arabic') }}
@@ -473,9 +546,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <textarea class="form-control {{ $errors->has('info_persian')? 'is-invalid' : '' }}"  id="tranlate_info_pr"
-                                        name="info persian" placeholder="اطلاعات" dir="rtl" cols="5"
-                                        rows="10">{{old('info_persian')}}</textarea>
+                                    <textarea class="form-control {{ $errors->has('info_persian')? 'is-invalid' : '' }}"
+                                        id="tranlate_info_pr" name="info persian" placeholder="اطلاعات" dir="rtl"
+                                        cols="5" rows="10">{{old('info_persian')}}</textarea>
                                     @if($errors->has('info_persian'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('info_persian') }}
@@ -498,7 +571,8 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select name="category" onchange="subcategory_fun()" class="form-control" id="category">
+                                    <select name="category" onchange="subcategory_fun()" class="form-control"
+                                        id="category">
                                         <option value="0" disabled selected>Categoty
                                         </option>
                                         @foreach ($types as $key=>$value)
@@ -511,7 +585,8 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Subcategory</label>
                                 <div class="col-sm-10">
-                                    <select name="subcategory" onchange="grouped_fun()" class="form-control" id="subcategory">
+                                    <select name="subcategory" onchange="grouped_fun()" class="form-control"
+                                        id="subcategory">
                                         <option value="0" disabled selected>Subcategoty</option>
                                     </select>
                                 </div>
@@ -524,7 +599,7 @@
                                     </select>
                                 </div>
                             </div>
-                           
+
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Tags</label>
                                 <div class="col-sm-10">
@@ -533,7 +608,6 @@
                                         @foreach ($tags as $key=>$value)
                                         <option value="{{$value->id}}">{{$value->tg_name}} / {{$value->tg_name_ku}}
                                         </option>
-
                                         @endforeach
                                     </select>
                                 </div>
@@ -557,17 +631,113 @@
                             </div>
                             <div class="checkbox my-2">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" name="hasinfo" id="customCheckhasinfo"
-                                        data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                    <input type="checkbox" class="custom-control-input" name="hasinfo"
+                                        id="customCheckhasinfo" data-parsley-multiple="groups"
+                                        data-parsley-mincheck="2">
                                     <label class="custom-control-label" for="customCheckhasinfo">Has Info ?</label>
                                 </div>
-                                
+
                             </div>
                             <div class="form-group text-right row m-t-20">
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
-                                    <button type="button" class="btn btn-success waves-effect waves-light" onclick="translates(this)">Translate</button>
+                                    <button type="button" class="btn btn-success waves-effect waves-light"
+                                        onclick="translates(this)">Translate</button>
                                 </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane p-3" id="search" role="tabpanel">
+                        <form class="row" action="{{route('dashboard.product.index')}}" method="GET">
+                            {{-- @csrf --}}
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Min Price</label>
+                                    <div class="col-10">
+                                        <input class="form-control" type="text" name="min" placeholder="Min" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+
+                                    <label class="col-sm-2 col-form-label">Mix Price</label>
+                                    <div class="col-10">
+                                        <input class="form-control" type="text" name="max" placeholder="Max" id="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Priority</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="priority">
+                                            <option disabled selected>Priority</option>
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Category</label>
+                                    <div class="col-sm-10">
+                                        <select name="category" onchange="subcategory_fun2()" class="form-control"
+                                            id="category2">
+                                            <option value="0" disabled selected>Categoty
+                                            </option>
+                                            @foreach ($types as $key=>$value)
+                                            <option value="{{$value->id}}">{{$value->t_name}} / {{$value->t_name_ku }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Subcategory</label>
+                                    <div class="col-sm-10">
+                                        <select name="subcategory" onchange="grouped_fun2()" class="form-control"
+                                            id="subcategory2">
+                                            <option value="0" disabled selected>Subcategoty</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Grouped</label>
+                                    <div class="col-sm-10">
+                                        <select name="grouped" class="form-control" id="grouped2">
+                                            <option value="0" disabled selected>Grouped</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {{-- <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Tags</label>
+                                    <div class="col-sm-10">
+                                        <select class="select2 mb-3 select2-multiple" name="tag[]" style="width: 100%"
+                                            multiple="multiple" data-placeholder="Choose">
+                                            @foreach ($tags as $key=>$value)
+                                            <option value="{{$value->id}}">{{$value->tg_name}} / {{$value->tg_name_ku}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div> --}}
+                                <div class="checkbox my-2">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="state" checked
+                                            id="customCheckx2" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                        <label class="custom-control-label" for="customCheckx2">Publish</label>
+                                    </div>
+                                </div>
+                                <div class="checkbox my-2">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="hasinfo"
+                                            id="customCheckhasinfo2" data-parsley-multiple="groups"
+                                            data-parsley-mincheck="2">
+                                        <label class="custom-control-label" for="customCheckhasinfo2">Has Info ?</label>
+                                    </div>
+                                </div>
+                                <button type="submit" name="search" value="search"
+                                    class="btn btn-raised btn-primary float-right">Search</button>
                             </div>
                         </form>
                     </div>
@@ -722,6 +892,43 @@ function translates_id(id,btn) {
              },
          });
  }
+    function subcategory_fun2() {
+        var category = $('#category2').find(":selected").val();
+
+     console.log(category);
+
+     $.ajaxSetup({
+         headers: {
+             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+      $.ajax({
+             url: "{{route('dashboard.product.subctegory')}}",
+             method: "POST",
+             dataType: 'json', 
+             data:
+             {
+                 'category': category,
+             },
+             success: function(result){
+                $('#subcategory2').empty().append('<option value="0" disabled selected>Subcategoty</option>');
+                $('#grouped2').empty().append('<option value="0" disabled selected>Grouped</option>');
+
+                result.forEach(element => {
+                        /// jquerify the DOM object 'o' so we can use the html method
+                        // $(o).html("option text");
+                        var o = new Option(element.st_name +' / '+element.st_name_ku, element.id);
+                        $("#subcategory2").append(o);
+                    console.log();
+                });
+             },
+             error:  function(xhr, status, error){
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+             },
+         });
+ }
     function grouped_fun() {
         var subcategory = $('#subcategory').find(":selected").val();
      $.ajaxSetup({
@@ -744,6 +951,38 @@ function translates_id(id,btn) {
                         // $(o).html("option text");
                         var o = new Option(element.gr_name +' / '+element.gr_name_ku, element.id);
                         $("#grouped").append(o);
+                    console.log();
+                });
+             },
+             error:  function(xhr, status, error){
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+             },
+         });
+ }
+    function grouped_fun2() {
+        var subcategory = $('#subcategory2').find(":selected").val();
+     $.ajaxSetup({
+         headers: {
+             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+     });
+      $.ajax({
+             url: "{{route('dashboard.product.grouped')}}",
+             method: "POST",
+             dataType: 'json', 
+             data:
+             {
+                 'subcategory': subcategory,
+             },
+             success: function(result){
+                $('#grouped2').empty().append('<option value="0" disabled selected>Grouped</option>');
+                result.forEach(element => {
+                        /// jquerify the DOM object 'o' so we can use the html method
+                        // $(o).html("option text");
+                        var o = new Option(element.gr_name +' / '+element.gr_name_ku, element.id);
+                        $("#grouped2").append(o);
                     console.log();
                 });
              },
